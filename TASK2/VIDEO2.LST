@@ -1,0 +1,64 @@
+Turbo Assembler	 Version 4.1	    02/16/20 10:52:13	    Page 1
+video2.asm
+
+
+
+      1	0000			     .model tiny
+      2	0000			     .code
+      3				     org 100h
+      4
+      5	0100  B8 B800		     Start:  mov ax, 0b800h
+      6	0103  8E C0			     mov es, ax
+      7	0105  BE 011Fr			     mov si, offset msg
+      8	0108  AC			     lodsb
+      9
+     10	0109  26: 88 07			     Cycle:  mov byte ptr es:[bx], al
+     11	010C  43				     inc bx
+     12	010D  26: 88 17				     mov byte ptr es:[bx], dl
+     13	0110  FE C2				     inc dl
+     14	0112  43				     inc bx
+     15	0113  AC				     lodsb
+     16	0114  81 FB 0F9F			     cmp bx, 80*50-1
+     17	0118  76 EF			     jbe Cycle
+     18
+     19	011A  B8 4C00			     mov ax, 4c00h
+     20	011D  CD 21			     int 21h
+     21
+     22	011F  48 65 6C 6C 6F 20	77+  msg: db 'Hello world!$'
+     23	      6F 72 6C 64 21 24
+     24
+     25				     end Start
+Turbo Assembler	 Version 4.1	    02/16/20 10:52:13	    Page 2
+Symbol Table
+
+
+
+
+Symbol Name			  Type	 Value
+
+??DATE				  Text	 "02/16/20"
+??FILENAME			  Text	 "video2  "
+??TIME				  Text	 "10:52:13"
+??VERSION			  Number 040A
+@32BIT				  Text	 0
+@CODE				  Text	 DGROUP
+@CODESIZE			  Text	 0
+@CPU				  Text	 0101H
+@CURSEG				  Text	 _TEXT
+@DATA				  Text	 DGROUP
+@DATASIZE			  Text	 0
+@FILENAME			  Text	 VIDEO2
+@INTERFACE			  Text	 000H
+@MODEL				  Text	 1
+@STACK				  Text	 DGROUP
+@WORDSIZE			  Text	 2
+CYCLE				  Near	 DGROUP:0109
+MSG				  Near	 DGROUP:011F
+START				  Near	 DGROUP:0100
+
+Groups & Segments		  Bit Size Align  Combine Class
+
+DGROUP				  Group
+  _DATA				  16  0000 Word	  Public  DATA
+  _TEXT				  16  012C Word	  Public  CODE
+

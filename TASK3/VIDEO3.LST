@@ -1,0 +1,142 @@
+Turbo Assembler	 Version 4.1	    02/18/20 15:31:40	    Page 1
+video3.asm
+
+
+
+      1				     .186
+      2	0000			     .model tiny
+      3
+      4				     ;=================================================
+      5
+      6	      =05DB		     rShadow = 05dbh
+      7	      =05DF		     bShadow = 05dfh
+      8
+      9	      =06C9		     tlCon   = 06c9h	     ;top left connor
+     10	      =06BB		     trCon   = 06bbh	     ;top right	connor
+     11	      =06C8		     blCon   = 06c8h	     ;bottom left connor
+     12	      =06BC		     brCon   = 06bch	     ;bottom right connor
+     13
+     14	      =06CD		     horiz   = 06cdh	     ;horiz line
+     15	      =06BA		     vertic  = 06bah	     ;vertic line
+     16
+     17	      =7E00		     fill    = 7e00h	     ;filler symbols
+     18
+     19	      =000E		     x1	     = 14d
+     20	      =0042		     x2	     = 66d
+     21	      =0004		     y1	     = 4d
+     22	      =000D		     y2	     = 13d
+     23
+     24				     ;=================================================
+     25
+     26	0000			     .code
+     27				     org 100h
+     28				     extrn   horline: proc
+     29				     extrn   printl:  proc
+     30	0100  B8 B800		     Start:  mov     ax, 0b800h
+     31	0103  8E C0			     mov     es, ax
+     32
+     33	0105  B9 0033			     mov     cx, x2-x1-1	     ;top start
+     34	0108  B8 06CD			     mov     ax, horiz
+     35	010B  BB 06C9			     mov     bx, tlCon
+     36	010E  BA 06BB			     mov     dx, trCon
+     37	0111  BF 029C			     mov     di, (80*y1+x1)*2
+     38	0114  E8 0000e			     call    horline		     ;top end
+     39
+     40	0117  B8 7E00			     mov     ax, fill		     ;left and right start
+     41	011A  BB 06BA			     mov     bx, vertic
+     42	011D  BA 06BA			     mov     dx, vertic
+     43	0120  BE 0320			     mov     si, 160*(y1+1)
+     44	0123  BF 001C		     LandR:  mov     di, x1*2
+     45	0126  03 FE			     add     di, si
+     46	0128  B9 0033			     mov     cx, x2-x1-1
+     47	012B  E8 0000e			     call    horline
+     48	012E  26: C7 05	05DB		     mov word ptr es:[di], rShadow
+     49	0133  81 C6 00A0		     add     si, 160
+     50	0137  81 FE 0820		     cmp     si, 160*y2
+     51	013B  72 E6			     jb	     LandR		     ;left and right end
+     52
+     53
+     54	013D  B8 06CD			     mov     ax, horiz		     ;bottom start
+     55	0140  BB 06C8			     mov     bx, blCon
+     56	0143  BA 06BC			     mov     dx, brCon
+     57	0146  BF 083C			     mov     di, (80*y2+x1)*2
+Turbo Assembler	 Version 4.1	    02/18/20 15:31:40	    Page 2
+video3.asm
+
+
+
+     58	0149  B9 0033			     mov     cx, x2-x1-1
+     59	014C  E8 0000e			     call    horline
+     60	014F  26: C7 05	05DB		     mov word ptr es:[di], rShadow   ;bottom end
+     61
+     62
+     63				     ;Shadows
+     64	0154  B8 05DF			     mov     ax, bShadow
+     65	0157  BB 05DF			     mov     bx, bShadow
+     66	015A  BA 05DF			     mov     dx, bShadow
+     67	015D  BF 08E0			     mov di, (80*(y2+1)	+ x1+2)*2
+     68	0160  B9 0032			     mov     cx, x2-x1-2
+     69	0163  E8 0000e			     call    horline
+     70
+     71	0166  BE 0174r			     mov     si, offset	msg	     ;line print
+     72	0169  BF 0542			     mov     di, (80*((y1+y2)/2)+33)*2
+     73
+     74	016C  E8 0000e			     call    printl		     ;line print
+     75
+     76	016F  B8 4C00			     mov     ax, 4c00h
+     77	0172  CD 21			     int     21h
+     78
+     79	0174  ?? 48 65 6C 6C 6F	2C+  msg: db, 'Hello, world!', 00
+     80	      20 77 6F 72 6C 64	21+
+     81	      00
+     82
+     83				     end Start
+Turbo Assembler	 Version 4.1	    02/18/20 15:31:40	    Page 3
+Symbol Table
+
+
+
+
+Symbol Name			  Type	 Value
+
+??DATE				  Text	 "02/18/20"
+??FILENAME			  Text	 "video3  "
+??TIME				  Text	 "15:31:40"
+??VERSION			  Number 040A
+@32BIT				  Text	 0
+@CODE				  Text	 DGROUP
+@CODESIZE			  Text	 0
+@CPU				  Text	 0103H
+@CURSEG				  Text	 _TEXT
+@DATA				  Text	 DGROUP
+@DATASIZE			  Text	 0
+@FILENAME			  Text	 VIDEO3
+@INTERFACE			  Text	 000H
+@MODEL				  Text	 1
+@STACK				  Text	 DGROUP
+@WORDSIZE			  Text	 2
+BLCON				  Number 06C8
+BRCON				  Number 06BC
+BSHADOW				  Number 05DF
+FILL				  Number 7E00
+HORIZ				  Number 06CD
+HORLINE				  Near	 DGROUP:---- Extern
+LANDR				  Near	 DGROUP:0123
+MSG				  Near	 DGROUP:0174
+PRINTL				  Near	 DGROUP:---- Extern
+RSHADOW				  Number 05DB
+START				  Near	 DGROUP:0100
+TLCON				  Number 06C9
+TRCON				  Number 06BB
+VERTIC				  Number 06BA
+X1				  Number 000E
+X2				  Number 0042
+Y1				  Number 0004
+Y2				  Number 000D
+
+Groups & Segments		  Bit Size Align  Combine Class
+
+DGROUP				  Group
+  _DATA				  16  0000 Word	  Public  DATA
+  _TEXT				  16  0183 Word	  Public  CODE
+

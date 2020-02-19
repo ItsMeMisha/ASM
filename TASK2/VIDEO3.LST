@@ -1,0 +1,158 @@
+Turbo Assembler	 Version 4.1	    02/16/20 15:11:01	    Page 1
+video3.asm
+
+
+
+      1	0000			     .model tiny
+      2
+      3	      =05DB		     rShadow = 05dbh
+      4	      =05DF		     bShadow = 05dfh
+      5
+      6	      =06C9		     tlCon   = 06c9h
+      7	      =06BB		     trCon   = 06bbh
+      8	      =06C8		     blCon   = 06c8h
+      9	      =06BC		     brCon   = 06bch
+     10
+     11	      =06CD		     horiz   = 06cdh
+     12	      =06BA		     vertic  = 06bah
+     13
+     14	      =7E00		     fill    = 7e00h
+     15
+     16	      =000E		     x1	     = 14d
+     17	      =0042		     x2	     = 66d
+     18	      =0004		     y1	     = 4d
+     19	      =000D		     y2	     = 13d
+     20
+     21	0000			     .code
+     22
+     23				     org 100h
+     24
+     25	0100  B8 B800		     Start:  mov ax, 0b800h
+     26	0103  8E C0			     mov es, ax
+     27
+     28	0105  BB 029C			     mov bx, (80*y1+x1)*2	     ;top start
+     29	0108  B9 06CD			     mov cx, horiz
+     30	010B  26: C7 07	06C9		     mov word ptr es:[bx], tlCon
+     31	0110  83 C3 02			     add bx, 2
+     32
+     33	0113  26: 89 0F		     top:    mov word ptr es:[bx], cx
+     34	0116  83 C3 02			     add bx, 2
+     35	0119  81 FB 0304		     cmp bx, (80*y1+x2)*2
+     36	011D  72 F4			     jb	top
+     37
+     38	011F  26: C7 07	06BB		     mov word ptr es:[bx], trCon     ;top end
+     39
+     40	0124  BB 033C			     mov bx, (80*(y1+1)+x1)*2
+     41	0127  B9 06BA			     mov cx, vertic
+     42
+     43	012A  26: 89 0F		     LandR:  mov word ptr es:[bx], cx	     ;left and right start
+     44	012D  26: 89 4F	68		     mov word ptr es:[bx+(x2-x1)*2], cx
+     45	0131  26: C7 47	6A 05DB		     mov word ptr es:[bx+(x2-x1+1)*2], rShadow
+     46	0137  81 C3 00A0		     add bx, 160
+     47	013B  81 FB 083C		     cmp bx, (80*y2+x1)*2
+     48	013F  72 E9			     jb	LandR			     ;left and right end
+     49
+     50	0141  26: C7 07	06C8		     mov word ptr es:[bx], blCon     ;bottom start
+     51	0146  83 C3 02			     add bx, 2
+     52	0149  B9 06CD			     mov cx, horiz
+     53
+     54	014C  26: 89 0F		     bottom: mov word ptr es:[bx], cx
+     55	014F  26: C7 87	00A0 05DF	     mov word ptr es:[bx+160], bShadow
+     56	0156  83 C3 02			     add bx, 2
+     57	0159  81 FB 08A4		     cmp bx, (80*y2+x2)*2
+Turbo Assembler	 Version 4.1	    02/16/20 15:11:01	    Page 2
+video3.asm
+
+
+
+     58	015D  72 ED			     jb	bottom
+     59
+     60	015F  26: C7 07	06BC		     mov word ptr es:[bx], brCon
+     61	0164  26: C7 47	02 05DB		     mov word ptr es:[bx+2], rShadow
+     62	016A  26: C7 87	00A2 05DF	     mov word ptr es:[bx+162], bShadow
+     63	0171  26: C7 87	00A0 05DF	     mov word ptr es:[bx+160], bShadow;bottom end
+     64
+     65	0178  BA 0320			     mov dx, 160*(y1+1)		     ;filler start
+     66	017B  BB 001E			     mov bx, 30d
+     67	017E  B9 7E00			     mov cx, fill
+     68
+     69	0181  03 DA		     filler: add bx, dx
+     70	0183  26: 89 0F			     mov word ptr es:[bx], cx
+     71	0186  83 C3 02			     add bx, 2
+     72	0189  2B DA			     sub bx, dx
+     73	018B  81 FB 0082		     cmp bx, (x2-1)*2
+     74	018F  72 F0			     jb	filler
+     75	0191  BB 001E			     mov bx, 30d
+     76	0194  81 C2 00A0		     add dx, 160d
+     77	0198  81 FA 0820		     cmp dx, 160*y2
+     78	019C  72 E3			     jb	filler			     ;filler end
+     79
+     80	019E  BE 01B5r			     mov si, offset msg
+     81	01A1  AC			     lodsb
+     82	01A2  BB 0542			     mov bx, (80*((y1+y2)/2)+33)*2
+     83
+     84	01A5  26: 88 07		     line:   mov byte ptr es:[bx], al
+     85	01A8  83 C3 02			     add bx, 2
+     86	01AB  AC			     lodsb
+     87	01AC  3C 24			     cmp al, '$'
+     88	01AE  75 F5			     jne line
+     89
+     90	01B0  B8 4C00			     mov ax, 4c00h
+     91	01B3  CD 21			     int 21h
+     92
+     93	01B5  ?? 48 65 6C 6C 6F	2C+  msg: db, 'Hello, world!$'
+     94	      20 77 6F 72 6C 64	21+
+     95	      24
+     96
+     97				     end Start
+Turbo Assembler	 Version 4.1	    02/16/20 15:11:01	    Page 3
+Symbol Table
+
+
+
+
+Symbol Name			  Type	 Value
+
+??DATE				  Text	 "02/16/20"
+??FILENAME			  Text	 "video3  "
+??TIME				  Text	 "15:11:01"
+??VERSION			  Number 040A
+@32BIT				  Text	 0
+@CODE				  Text	 DGROUP
+@CODESIZE			  Text	 0
+@CPU				  Text	 0101H
+@CURSEG				  Text	 _TEXT
+@DATA				  Text	 DGROUP
+@DATASIZE			  Text	 0
+@FILENAME			  Text	 VIDEO3
+@INTERFACE			  Text	 000H
+@MODEL				  Text	 1
+@STACK				  Text	 DGROUP
+@WORDSIZE			  Text	 2
+BLCON				  Number 06C8
+BOTTOM				  Near	 DGROUP:014C
+BRCON				  Number 06BC
+BSHADOW				  Number 05DF
+FILL				  Number 7E00
+FILLER				  Near	 DGROUP:0181
+HORIZ				  Number 06CD
+LANDR				  Near	 DGROUP:012A
+LINE				  Near	 DGROUP:01A5
+MSG				  Near	 DGROUP:01B5
+RSHADOW				  Number 05DB
+START				  Near	 DGROUP:0100
+TLCON				  Number 06C9
+TOP				  Near	 DGROUP:0113
+TRCON				  Number 06BB
+VERTIC				  Number 06BA
+X1				  Number 000E
+X2				  Number 0042
+Y1				  Number 0004
+Y2				  Number 000D
+
+Groups & Segments		  Bit Size Align  Combine Class
+
+DGROUP				  Group
+  _DATA				  16  0000 Word	  Public  DATA
+  _TEXT				  16  01C4 Word	  Public  CODE
+

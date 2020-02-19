@@ -1,0 +1,102 @@
+Turbo Assembler	 Version 4.1	    02/18/20 15:17:38	    Page 1
+framesou.asm
+
+
+
+      1				     .186
+      2	0000			     .model tiny
+      3	0000			     .code
+      4				     locals @@
+      5				     org 100h
+      6
+      7				     ;=================================================
+      8				     ; Draws a horizontal line
+      9				     ; Entry:DI	- address of start
+     10				     ;	     AL	- character to draw in middle
+     11				     ;	     AH	- color	attr
+     12				     ;	     BL	- left character
+     13				     ;	     BH	- left color attr
+     14				     ;	     DL	- right	character
+     15				     ;	     DH	- right	color attr
+     16				     ;	     CX	- lenght
+     17				     ; Destr:ES, DI, CX
+     18				     ;=================================================
+     19
+     20				     public  horline
+     21
+     22	0100			     horline proc
+     23
+     24	0100  68 B800			     push    0b800h
+     25	0103  07			     pop     es
+     26	0104  26: 89 1D			     mov word ptr es:[di], BX
+     27	0107  83 C7 02			     add     di, 2
+     28	010A  F3> AB			     rep     stosw
+     29	010C  26: 89 15			     mov word ptr es:[di], DX
+     30	010F  83 C7 02			     add     di, 2
+     31	0112  C3			     ret
+     32
+     33	0113			     horline endp
+     34
+     35				     ;=================================================
+     36				     ; Print Line in video memory
+     37				     ; Entry:SI	offset of line
+     38				     ;	     DI	address	in video memory
+     39				     ; Destr:AL, DI
+     40				     ;=================================================
+     41
+     42				     public printl
+     43
+     44	0113			     printl  proc
+     45
+     46	0113  AC			     lodsb
+     47	0114  AA		     @@NEXT: stosb
+     48	0115  47			     inc di
+     49	0116  AC			     lodsb
+     50	0117  3C 00			     cmp     al, 00
+     51	0119  75 F9			     jne     @@NEXT
+     52
+     53	011B  C3			     ret
+     54
+     55	011C			     printl  endp
+     56
+     57
+Turbo Assembler	 Version 4.1	    02/18/20 15:17:38	    Page 2
+framesou.asm
+
+
+
+     58				     end
+Turbo Assembler	 Version 4.1	    02/18/20 15:17:38	    Page 3
+Symbol Table
+
+
+
+
+Symbol Name			  Type	 Value
+
+??DATE				  Text	 "02/18/20"
+??FILENAME			  Text	 "framesou"
+??TIME				  Text	 "15:17:38"
+??VERSION			  Number 040A
+@32BIT				  Text	 0
+@@NEXT				  Near	 DGROUP:0114
+@CODE				  Text	 DGROUP
+@CODESIZE			  Text	 0
+@CPU				  Text	 0103H
+@CURSEG				  Text	 _TEXT
+@DATA				  Text	 DGROUP
+@DATASIZE			  Text	 0
+@FILENAME			  Text	 FRAMESOU
+@INTERFACE			  Text	 000H
+@MODEL				  Text	 1
+@STACK				  Text	 DGROUP
+@WORDSIZE			  Text	 2
+HORLINE				  Near	 DGROUP:0100
+PRINTL				  Near	 DGROUP:0113
+
+Groups & Segments		  Bit Size Align  Combine Class
+
+DGROUP				  Group
+  _DATA				  16  0000 Word	  Public  DATA
+  _TEXT				  16  011C Word	  Public  CODE
+
