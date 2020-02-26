@@ -36,15 +36,15 @@ public 	horline
 
 horline	proc
 	
-	push 	0b800h
-	pop 	es
-	mov word ptr es:[di], BX
-	add	di, 2
-	rep 	stosw
-	mov word ptr es:[di], DX
-	add	di, 2
+		push 	0b800h
+		pop 	es
+		mov 	word ptr es:[di], BX
+		add	di, 2
+			rep 	stosw
+		mov 	word ptr es:[di], DX
+		add	di, 2
 
-	ret
+		ret
 
 horline	endp
 
@@ -60,31 +60,29 @@ public	frshad
 
 frshad	proc
 
-	push	di cx dx
+		push	di cx dx
 
-	mov	ax, bShadow
-	mov	bx, bShadow
-	mov	si, dx
-	mov	dx, bShadow
+		mov	ax, bShadow
+		mov	bx, bShadow
+		mov	si, dx
+		mov	dx, bShadow
 
-	add 	di, 2
-	call	horline
-	sub	di, 162d
-	mov	ax, rShadow
-	inc	si
+		add 	di, 2
+		call	horline
+		sub	di, 162d
+		mov	ax, rShadow
+		inc	si
 
-@@rightSh: 
+@@rightSh: 	stosw
+		sub	di, 162d
+		dec	si
+		cmp	si, 1
+		jae	@@rightSh	
 
-	stosw
-	sub	di, 162d
-	dec	si
-	cmp	si, 1
-	jae	@@rightSh	
+		pop	dx cx di
 
-	pop	dx cx di
-
-	ret
-	endp
+		ret
+frshad	endp
 
 ;=================================================
 ; Draws a frame
@@ -98,59 +96,59 @@ public	framedr
 
 framedr	proc
 
-	push	di
-	push	cx
-	push	dx
+		push	di
+		push	cx
+		push	dx
 
-	mov 	si, dx
-	push	cx
+		mov 	si, dx
+		push	cx
 
-	mov	ax, horiz	
-	mov	bx, tlCon
-	mov	dx, trCon	
-	call	horline
-	pop 	cx
-	shl	cx, 1
-	sub	di, cx
-	shr	cx, 1
-	add	di, 156d
+		mov	ax, horiz	
+		mov	bx, tlCon
+		mov	dx, trCon	
+		call	horline
+		pop 	cx
+		shl	cx, 1
+		sub	di, cx
+		shr	cx, 1
+		add	di, 156d
 
-	push	si
+		push	si
 
-	mov	ax, fill
-	mov	bx, vertic
-	mov	dx, vertic
-@@MID:	push	cx
-	call	horline
-	pop	cx
-	shl	cx, 1
-	sub	di, cx
-	add	di, 156d
-	shr	cx, 1
-	dec	si
-	cmp	si, 0
-	ja	@@MID
+		mov	ax, fill
+		mov	bx, vertic
+		mov	dx, vertic
+@@MID:		push	cx
+		call	horline
+		pop	cx
+		shl	cx, 1
+		sub	di, cx
+		add	di, 156d
+		shr	cx, 1
+		dec	si
+		cmp	si, 0
+		ja	@@MID
 
-	pop	si
+		pop	si
 
-	mov	ax, horiz
-	mov	bx, blCon
-	mov	dx, brCon
-	push	cx
-	call	horline
-	pop	cx
-	shl	cx, 1
-	sub	di, cx
-	shr	cx, 1
-	mov	dx, si
-	add	di, 156d
-	call	frshad
+		mov	ax, horiz
+		mov	bx, blCon
+		mov	dx, brCon
+		push	cx
+		call	horline
+		pop	cx
+		shl	cx, 1
+		sub	di, cx
+		shr	cx, 1
+		mov	dx, si
+		add	di, 156d
+		call	frshad
 
-	pop	dx
-	pop	cx
-	pop	di
+		pop	dx
+		pop	cx
+		pop	di
 
-	ret
+		ret
 
 framedr	endp
 
@@ -163,27 +161,26 @@ public frext
 
 frext	proc
 
-	mov	di, (80*11+33)*2
-	mov	cx, 12
-	mov	dx, 1
+		mov	di, (80*11+33)*2
+		mov	cx, 12
+		mov	dx, 1
 	
-@@DRAW: ;call	framedr
-	sub	di, (80+3)*2
-	add	cx, 6
-	add	dx, 2
-	call	framedr
-	mov	ah, 86h
-	push	cx
-	push	dx
-	mov	cx, 3
-	mov	dx, 0d40h
-	int	15h
-	pop	dx
-	pop	cx
-	cmp	di, 160
-	jae	@@DRAW
+@@DRAW: 	sub	di, (80+3)*2
+		add	cx, 6
+		add	dx, 2
+		call	framedr
+		mov	ah, 86h
+		push	cx
+		push	dx
+		mov	cx, 3
+		mov	dx, 0d40h
+		int	15h
+		pop	dx
+		pop	cx
+		cmp	di, 160
+		jae	@@DRAW
 
-	ret
+		ret
 
 frext	endp
 
@@ -198,14 +195,14 @@ public printl
 
 printl	proc
 
-	lodsb
-@@NEXT:	stosb
-	inc di
-	lodsb
-	cmp	al, 00
-	jne	@@NEXT
+		lodsb
+@@NEXT:		stosb
+		inc di
+		lodsb
+		cmp	al, 00
+		jne	@@NEXT
 
-	ret
+		ret
 
 printl	endp
 

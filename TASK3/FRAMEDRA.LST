@@ -1,0 +1,50 @@
+Turbo Assembler	 Version 4.1	    02/24/20 13:20:43	    Page 1
+framedra.asm
+
+
+
+      1				     .186
+      2	0000			     .model tiny
+      3	0000			     .code
+      4				     org 100h
+      5
+      6				     extrn frext     :proc
+      7	0100  E8 0000e		     Start:  call    frext
+      8
+      9	0103  B8 4C00			     mov     ax, 4c00h
+     10	0106  CD 21			     int     21h
+     11
+     12				     end     Start
+Turbo Assembler	 Version 4.1	    02/24/20 13:20:43	    Page 2
+Symbol Table
+
+
+
+
+Symbol Name			  Type	 Value
+
+??DATE				  Text	 "02/24/20"
+??FILENAME			  Text	 "framedra"
+??TIME				  Text	 "13:20:43"
+??VERSION			  Number 040A
+@32BIT				  Text	 0
+@CODE				  Text	 DGROUP
+@CODESIZE			  Text	 0
+@CPU				  Text	 0103H
+@CURSEG				  Text	 _TEXT
+@DATA				  Text	 DGROUP
+@DATASIZE			  Text	 0
+@FILENAME			  Text	 FRAMEDRA
+@INTERFACE			  Text	 000H
+@MODEL				  Text	 1
+@STACK				  Text	 DGROUP
+@WORDSIZE			  Text	 2
+FREXT				  Near	 DGROUP:---- Extern
+START				  Near	 DGROUP:0100
+
+Groups & Segments		  Bit Size Align  Combine Class
+
+DGROUP				  Group
+  _DATA				  16  0000 Word	  Public  DATA
+  _TEXT				  16  0108 Word	  Public  CODE
+

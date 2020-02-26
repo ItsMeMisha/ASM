@@ -1,4 +1,4 @@
-Turbo Assembler	 Version 4.1	    02/18/20 15:31:40	    Page 1
+Turbo Assembler	 Version 4.1	    02/24/20 12:51:56	    Page 1
 video3.asm
 
 
@@ -31,67 +31,68 @@ video3.asm
      26	0000			     .code
      27				     org 100h
      28				     extrn   horline: proc
-     29				     extrn   printl:  proc
-     30	0100  B8 B800		     Start:  mov     ax, 0b800h
-     31	0103  8E C0			     mov     es, ax
-     32
-     33	0105  B9 0033			     mov     cx, x2-x1-1	     ;top start
-     34	0108  B8 06CD			     mov     ax, horiz
-     35	010B  BB 06C9			     mov     bx, tlCon
-     36	010E  BA 06BB			     mov     dx, trCon
-     37	0111  BF 029C			     mov     di, (80*y1+x1)*2
-     38	0114  E8 0000e			     call    horline		     ;top end
-     39
-     40	0117  B8 7E00			     mov     ax, fill		     ;left and right start
-     41	011A  BB 06BA			     mov     bx, vertic
-     42	011D  BA 06BA			     mov     dx, vertic
-     43	0120  BE 0320			     mov     si, 160*(y1+1)
-     44	0123  BF 001C		     LandR:  mov     di, x1*2
-     45	0126  03 FE			     add     di, si
-     46	0128  B9 0033			     mov     cx, x2-x1-1
-     47	012B  E8 0000e			     call    horline
-     48	012E  26: C7 05	05DB		     mov word ptr es:[di], rShadow
-     49	0133  81 C6 00A0		     add     si, 160
-     50	0137  81 FE 0820		     cmp     si, 160*y2
-     51	013B  72 E6			     jb	     LandR		     ;left and right end
-     52
+     29				     extrn   frameds: proc
+     30				     extrn   printl:  proc
+     31	0100  B8 B800		     Start:  mov     ax, 0b800h
+     32	0103  8E C0			     mov     es, ax
+     33
+     34	0105  B9 0033			     mov     cx, x2-x1-1	     ;top start
+     35	0108  B8 06CD			     mov     ax, horiz
+     36	010B  BB 06C9			     mov     bx, tlCon
+     37	010E  BA 06BB			     mov     dx, trCon
+     38	0111  BF 029C			     mov     di, (80*y1+x1)*2
+     39	0114  E8 0000e			     call    horline		     ;top end
+     40
+     41	0117  B8 7E00			     mov     ax, fill		     ;left and right start
+     42	011A  BB 06BA			     mov     bx, vertic
+     43	011D  BA 06BA			     mov     dx, vertic
+     44	0120  BE 0320			     mov     si, 160*(y1+1)
+     45	0123  BF 001C		     LandR:  mov     di, x1*2
+     46	0126  03 FE			     add     di, si
+     47	0128  B9 0033			     mov     cx, x2-x1-1
+     48	012B  E8 0000e			     call    horline
+     49	012E  26: C7 05	05DB		     mov word ptr es:[di], rShadow
+     50	0133  81 C6 00A0		     add     si, 160
+     51	0137  81 FE 0820		     cmp     si, 160*y2
+     52	013B  72 E6			     jb	     LandR		     ;left and right end
      53
-     54	013D  B8 06CD			     mov     ax, horiz		     ;bottom start
-     55	0140  BB 06C8			     mov     bx, blCon
-     56	0143  BA 06BC			     mov     dx, brCon
-     57	0146  BF 083C			     mov     di, (80*y2+x1)*2
-Turbo Assembler	 Version 4.1	    02/18/20 15:31:40	    Page 2
+     54
+     55	013D  B8 06CD			     mov     ax, horiz		     ;bottom start
+     56	0140  BB 06C8			     mov     bx, blCon
+     57	0143  BA 06BC			     mov     dx, brCon
+Turbo Assembler	 Version 4.1	    02/24/20 12:51:56	    Page 2
 video3.asm
 
 
 
-     58	0149  B9 0033			     mov     cx, x2-x1-1
-     59	014C  E8 0000e			     call    horline
-     60	014F  26: C7 05	05DB		     mov word ptr es:[di], rShadow   ;bottom end
-     61
+     58	0146  BF 083C			     mov     di, (80*y2+x1)*2
+     59	0149  B9 0033			     mov     cx, x2-x1-1
+     60	014C  E8 0000e			     call    horline
+     61	014F  26: C7 05	05DB		     mov word ptr es:[di], rShadow   ;bottom end
      62
-     63				     ;Shadows
-     64	0154  B8 05DF			     mov     ax, bShadow
-     65	0157  BB 05DF			     mov     bx, bShadow
-     66	015A  BA 05DF			     mov     dx, bShadow
-     67	015D  BF 08E0			     mov di, (80*(y2+1)	+ x1+2)*2
-     68	0160  B9 0032			     mov     cx, x2-x1-2
-     69	0163  E8 0000e			     call    horline
-     70
-     71	0166  BE 0174r			     mov     si, offset	msg	     ;line print
-     72	0169  BF 0542			     mov     di, (80*((y1+y2)/2)+33)*2
-     73
-     74	016C  E8 0000e			     call    printl		     ;line print
-     75
-     76	016F  B8 4C00			     mov     ax, 4c00h
-     77	0172  CD 21			     int     21h
-     78
-     79	0174  ?? 48 65 6C 6C 6F	2C+  msg: db, 'Hello, world!', 00
-     80	      20 77 6F 72 6C 64	21+
-     81	      00
-     82
-     83				     end Start
-Turbo Assembler	 Version 4.1	    02/18/20 15:31:40	    Page 3
+     63
+     64				     ;Shadows
+     65	0154  B8 05DF			     mov     ax, bShadow
+     66	0157  BB 05DF			     mov     bx, bShadow
+     67	015A  BA 05DF			     mov     dx, bShadow
+     68	015D  BF 08E0			     mov di, (80*(y2+1)	+ x1+2)*2
+     69	0160  B9 0032			     mov     cx, x2-x1-2
+     70	0163  E8 0000e			     call    horline
+     71
+     72	0166  BE 0174r			     mov     si, offset	msg	     ;line print
+     73	0169  BF 0542			     mov     di, (80*((y1+y2)/2)+33)*2
+     74
+     75	016C  E8 0000e			     call    printl		     ;line print
+     76
+     77	016F  B8 4C00			     mov     ax, 4c00h
+     78	0172  CD 21			     int     21h
+     79
+     80	0174  ?? 48 65 6C 6C 6F	2C+  msg: db, 'Hello, world!', 00
+     81	      20 77 6F 72 6C 64	21+
+     82	      00
+     83
+     84				     end Start
+Turbo Assembler	 Version 4.1	    02/24/20 12:51:56	    Page 3
 Symbol Table
 
 
@@ -99,9 +100,9 @@ Symbol Table
 
 Symbol Name			  Type	 Value
 
-??DATE				  Text	 "02/18/20"
+??DATE				  Text	 "02/24/20"
 ??FILENAME			  Text	 "video3  "
-??TIME				  Text	 "15:31:40"
+??TIME				  Text	 "12:51:56"
 ??VERSION			  Number 040A
 @32BIT				  Text	 0
 @CODE				  Text	 DGROUP
@@ -119,6 +120,7 @@ BLCON				  Number 06C8
 BRCON				  Number 06BC
 BSHADOW				  Number 05DF
 FILL				  Number 7E00
+FRAMEDS				  Near	 DGROUP:---- Extern
 HORIZ				  Number 06CD
 HORLINE				  Near	 DGROUP:---- Extern
 LANDR				  Near	 DGROUP:0123

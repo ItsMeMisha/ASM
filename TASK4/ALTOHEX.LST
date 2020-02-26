@@ -1,0 +1,94 @@
+Turbo Assembler	 Version 4.1	    02/24/20 19:48:07	    Page 1
+altohex.asm
+
+
+
+      1	0000			     .model tiny
+      2	0000			     .code
+      3				     org 100h
+      4				     locals @@
+      5
+      6				     ;=================================================
+      7				     ; Returns two ASCII codes:	BH - high digit, BL - low digit
+      8				     ; Entry:AL	- number to converse
+      9				     ; Exit: DH, DL - two digits
+     10				     ;=================================================
+     11
+     12				     public  Al2Hex
+     13
+     14	0100			     Al2Hex  proc
+     15
+     16	0100  50			     push    ax
+     17	0101  BA F00F			     mov     dx, 0f00fh
+     18	0104  22 D0			     and     dl, al
+     19	0106  22 F0			     and     dh, al
+     20	0108  D0 EE D0 EE D0 EE	D0+	     shr     dh, 4
+     21	      EE
+     22
+     23	0110  8A C2			     mov     al, dl
+     24	0112  E8 000B			     call    Dgt2Chr
+     25	0115  8A D4			     mov     dl, ah
+     26
+     27	0117  8A C6			     mov     al, dh
+     28	0119  E8 0004			     call    Dgt2Chr
+     29	011C  8A F4			     mov     dh, ah
+     30
+     31	011E  58			     pop     ax
+     32	011F  C3			     ret
+     33	0120				     endp
+     34
+     35				     ;=================================================
+     36				     ; Turns low 4 bits	of al to ascii code
+     37				     ; Entry:AL	- digit	to converse
+     38				     ; Exit: AH	- ascii	code
+     39				     ;=================================================
+     40
+     41				     public Dgt2Chr
+     42
+     43	0120			     Dgt2Chr proc
+     44
+     45	0120  8A E0			     mov     ah, al
+     46	0122  80 FC 09			     cmp     ah, 09h
+     47	0125  76 03			     jbe     @@LESS
+     48	0127  80 C4 07			     add     ah, 07h
+     49
+     50	012A  80 C4 30		     @@LESS: add     ah, 30h
+     51	012D  C3			     ret
+     52
+     53	012E				     endp
+     54
+     55				     end
+Turbo Assembler	 Version 4.1	    02/24/20 19:48:07	    Page 2
+Symbol Table
+
+
+
+
+Symbol Name			  Type	 Value
+
+??DATE				  Text	 "02/24/20"
+??FILENAME			  Text	 "altohex "
+??TIME				  Text	 "19:48:07"
+??VERSION			  Number 040A
+@32BIT				  Text	 0
+@@LESS				  Near	 DGROUP:012A
+@CODE				  Text	 DGROUP
+@CODESIZE			  Text	 0
+@CPU				  Text	 0101H
+@CURSEG				  Text	 _TEXT
+@DATA				  Text	 DGROUP
+@DATASIZE			  Text	 0
+@FILENAME			  Text	 ALTOHEX
+@INTERFACE			  Text	 000H
+@MODEL				  Text	 1
+@STACK				  Text	 DGROUP
+@WORDSIZE			  Text	 2
+AL2HEX				  Near	 DGROUP:0100
+DGT2CHR				  Near	 DGROUP:0120
+
+Groups & Segments		  Bit Size Align  Combine Class
+
+DGROUP				  Group
+  _DATA				  16  0000 Word	  Public  DATA
+  _TEXT				  16  012E Word	  Public  CODE
+

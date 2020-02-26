@@ -1,0 +1,113 @@
+Turbo Assembler	 Version 4.1	    02/25/20 18:13:09	    Page 1
+inter2.asm
+
+
+
+      1				     .186
+      2	0000			     .model tiny
+      3	0000			     .code
+      4				     org 100h
+      5
+      6				     extrn   Al2Hex  :proc
+      7				     extrn   framedr :proc
+      8				     extrn   EndLabel
+      9	0100  33 C0		     Start:	     xor     ax, ax
+     10	0102  8E C0				     mov     es, ax
+     11
+     12	0104  FA				     cli
+     13	0105  BB 0024				     mov     bx, 9*4h
+     14	0108  26: 8B 07				     mov     ax, word ptr es:[bx]
+     15	010B  A3 016Fr				     mov     Old09, ax
+     16	010E  26: 8B 47	02			     mov     ax, word ptr es:[bx+2]
+     17	0112  A3 0171r				     mov     Old09+2, ax
+     18
+     19	0115  26: C7 07	012Dr			     mov     word ptr es:[bx], offset New09
+     20	011A  8C C8				     mov     ax, cs
+     21	011C  26: 89 47	02			     mov     word ptr es:[bx+2], ax
+     22	0120  FB				     sti
+     23
+     24	0121  B8 3100				     mov     ax, 3100h
+     25	0124  BA 0000e				     mov     dx, offset	EndLabel
+     26	0127  C1 EA 04				     shr     dx, 4
+     27	012A  42				     inc     dx
+     28	012B  CD 21				     int     21h
+     29
+     30	012D			     New09   proc
+     31	012D  50 53 51 52 57 56	06		     push    ax	bx cx dx di si es
+     32	0134  B8 B800				     mov     ax, 0b800h
+     33	0137  8E C0				     mov     es, ax
+     34	0139  BF 053C				     mov     di, (8*80+30)*2
+     35	013C  B9 0014				     mov     cx, 20
+     36	013F  BA 0005				     mov     dx, 5
+     37	0142  E8 0000e				     call    framedr
+     38	0145  E4 60				     in	     al, 60h
+     39	0147  E8 0000e				     call    Al2Hex
+     40	014A  BF 0690				     mov     di, (10*80+40)*2
+     41	014D  B4 4E				     mov     ah, 4eh
+     42	014F  8A C6				     mov     al, dh
+     43	0151  AB				     stosw
+     44	0152  8A C2				     mov     al, dl
+     45	0154  AB				     stosw
+     46
+     47	0155  8A D0				     mov     dl, al
+     48	0157  E4 61				     in	     al, 61h
+     49	0159  8A E0				     mov     ah, al
+     50	015B  0C 80				     or	     al, 80h
+     51	015D  E6 61				     out     61h, al
+     52	015F  86 C4				     xchg    al, ah
+     53	0161  E6 61				     out     61h, al
+     54
+     55	0163  B0 20				     mov     al, 20h
+     56	0165  E6 20				     out     20h, al
+     57
+Turbo Assembler	 Version 4.1	    02/25/20 18:13:09	    Page 2
+inter2.asm
+
+
+
+     58	0167  07 5E 5F 5A 59 5B	58		     pop     es	si di dx cx bx ax
+     59
+     60	016E  EA				     db	     0eah
+     61	016F  0000		     Old09	     dw	     0
+     62	0171  0000				     dw	     0
+     63
+     64	0173					     endp
+     65
+     66				     end     Start
+Turbo Assembler	 Version 4.1	    02/25/20 18:13:09	    Page 3
+Symbol Table
+
+
+
+
+Symbol Name			  Type	 Value
+
+??DATE				  Text	 "02/25/20"
+??FILENAME			  Text	 "inter2  "
+??TIME				  Text	 "18:13:09"
+??VERSION			  Number 040A
+@32BIT				  Text	 0
+@CODE				  Text	 DGROUP
+@CODESIZE			  Text	 0
+@CPU				  Text	 0103H
+@CURSEG				  Text	 _TEXT
+@DATA				  Text	 DGROUP
+@DATASIZE			  Text	 0
+@FILENAME			  Text	 INTER2
+@INTERFACE			  Text	 000H
+@MODEL				  Text	 1
+@STACK				  Text	 DGROUP
+@WORDSIZE			  Text	 2
+AL2HEX				  Near	 DGROUP:---- Extern
+ENDLABEL			  Word	 DGROUP:---- Extern
+FRAMEDR				  Near	 DGROUP:---- Extern
+NEW09				  Near	 DGROUP:012D
+OLD09				  Word	 DGROUP:016F
+START				  Near	 DGROUP:0100
+
+Groups & Segments		  Bit Size Align  Combine Class
+
+DGROUP				  Group
+  _DATA				  16  0000 Word	  Public  DATA
+  _TEXT				  16  0173 Word	  Public  CODE
+

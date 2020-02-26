@@ -1,0 +1,94 @@
+Turbo Assembler	 Version 4.1	    02/25/20 14:38:41	    Page 1
+inter1.asm
+
+
+
+      1				     .186
+      2	0000			     .model tiny
+      3	0000			     .code
+      4				     org 100h
+      5
+      6	0100  33 C0		     Start:  xor     ax, ax
+      7	0102  8E C0			     mov     es, ax
+      8
+      9	0104  FA			     cli
+     10	0105  BB 0024			     mov     bx, 9*4h
+     11	0108  26: 8B 07			     mov     ax, word ptr es:[bx]
+     12	010B  A3 0151r			     mov     Old09, ax
+     13	010E  26: 8B 47	02		     mov     ax, word ptr es:[bx+2]
+     14	0112  A3 0153r			     mov     Old09+2, ax
+     15
+     16	0115  26: C7 07	012Dr		     mov     word ptr es:[bx], offset New09
+     17	011A  8C C8			     mov     ax, cs
+     18	011C  26: 89 47	02		     mov     word ptr es:[bx+2], ax
+     19	0120  FB			     sti
+     20
+     21	0121  B8 3100			     mov     ax, 3100h
+     22	0124  BA 0155r			     mov     dx, offset	EndLabel
+     23	0127  C1 EA 04			     shr     dx, 4
+     24	012A  42			     inc     dx
+     25	012B  CD 21			     int     21h
+     26
+     27	012D			     New09   proc
+     28	012D  50 57 06			     push    ax	di es
+     29	0130  B8 B800			     mov     ax, 0b800h
+     30	0133  8E C0			     mov     es, ax
+     31	0135  E4 60			     in	     al, 60h
+     32	0137  BF 0690			     mov     di, (10*80+40)*2
+     33	013A  B4 4E			     mov     ah, 4eh
+     34	013C  AB			     stosw
+     35	013D  E4 61			     in	     al, 61h
+     36	013F  8A E0			     mov     ah, al
+     37	0141  0C 80			     or	     al, 80h
+     38	0143  E6 61			     out     61h, al
+     39	0145  86 C4			     xchg    al, ah
+     40	0147  E6 61			     out     61h, al
+     41
+     42	0149  B0 20			     mov     al, 20h
+     43	014B  E6 20			     out     20h, al
+     44
+     45	014D  07 5F 58			     pop     es	di ax
+     46
+     47	0150  EA		     db	     0eah
+     48	0151  0000		     Old09   dw	0
+     49	0153  0000			     dw	0
+     50
+     51	0155				     endp
+     52
+     53	0155			     EndLabel:
+     54				     end     Start
+Turbo Assembler	 Version 4.1	    02/25/20 14:38:41	    Page 2
+Symbol Table
+
+
+
+
+Symbol Name			  Type	 Value
+
+??DATE				  Text	 "02/25/20"
+??FILENAME			  Text	 "inter1  "
+??TIME				  Text	 "14:38:41"
+??VERSION			  Number 040A
+@32BIT				  Text	 0
+@CODE				  Text	 DGROUP
+@CODESIZE			  Text	 0
+@CPU				  Text	 0103H
+@CURSEG				  Text	 _TEXT
+@DATA				  Text	 DGROUP
+@DATASIZE			  Text	 0
+@FILENAME			  Text	 INTER1
+@INTERFACE			  Text	 000H
+@MODEL				  Text	 1
+@STACK				  Text	 DGROUP
+@WORDSIZE			  Text	 2
+ENDLABEL			  Near	 DGROUP:0155
+NEW09				  Near	 DGROUP:012D
+OLD09				  Word	 DGROUP:0151
+START				  Near	 DGROUP:0100
+
+Groups & Segments		  Bit Size Align  Combine Class
+
+DGROUP				  Group
+  _DATA				  16  0000 Word	  Public  DATA
+  _TEXT				  16  0155 Word	  Public  CODE
+

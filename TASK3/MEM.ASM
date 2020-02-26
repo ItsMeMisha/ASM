@@ -1,8 +1,8 @@
 .186
-locals @@
 .model tiny
 .code
 
+local @@
 ;=================================================
 ; Finds the first occurrence of value in memory
 ; Entry:ES - segment of memory
@@ -16,13 +16,14 @@ locals @@
 public 	memchr
 
 memchr 	proc
+
+		cld	
+		repne	scasb
+		je	@@FOUND
+		mov 	di, 0
 	
-	repne	scasb
-	je	@@FOUND
-	mov 	di, 0
-	
-@@FOUND	dec 	di
-	ret
+@@FOUND:	dec 	di
+		ret
 memchr	endp
 
 ;=================================================
@@ -40,19 +41,24 @@ public	memcmp
 
 memcmp 	proc
 
-	repne 	cmpsb
-	ja 	@@BIGGER
-	jb 	@@LESS
+		cld
+		repne 	cmpsb
+		ja 	@@BIGGER
+		dec	si
+		dec	di
+		lodsb
+		cmp	al, byte ptr es:[di]
+		jb 	@@LESS
 
-	mov 	al, 0
-	jmp 	@@END
+		mov 	al, 0
+		jmp 	@@END
 
-@@BIGGER mov	al, 1
-	jmp 	@@END
+@@BIGGER:	mov	al, 1
+		jmp 	@@END
 
-@@LESS	mov	al, -1
+@@LESS:		mov	al, -1
 
-@@END	ret
+@@END:		ret
 memcmp	endp
 
 ;=================================================
@@ -68,14 +74,15 @@ public 	memset
 
 memset 	proc
 
-	rep	stosb
+		cld
+		rep	stosb
 
-	ret
+		ret
 memset	endp
 
 ;=================================================
 ; Copies first CX bytes from first area to second
-: Entry:DS - first memory segment
+; Entry:DS - first memory segment
 ;	SI - the beginning of the first area
 ;	ES - second memory segment
 ;	DI - the beginning of the second area
@@ -86,12 +93,14 @@ memset	endp
 public	memcpy
 
 memcpy	proc
+	
+		cld
+		rep 	movsb
 
-	rep 	movsb
-
-	ret
+		ret
 memcpy	endp
 
+end
 ;=================================================
 ;		END OF FILE
 ;=================================================

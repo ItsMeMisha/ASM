@@ -26,6 +26,7 @@ y2	= 13d
 .code
 org 100h
 extrn	horline: proc
+extrn	frameds: proc
 extrn	printl:  proc
 Start:	mov	ax, 0b800h
 	mov 	es, ax
