@@ -1,0 +1,1 @@
+tlink /t inter2b.obj replacei.obj altohex.obj  framesou.obj new09.obj endprog.obj

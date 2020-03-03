@@ -1,0 +1,132 @@
+Turbo Assembler	 Version 4.1	    03/03/20 16:30:12	    Page 1
+new28.asm
+
+
+
+      1				     .186
+      2	0000			     .model tiny
+      3	0000			     .code
+      4				     org     100h
+      5				     locals @@
+      6
+      7				     extrn	     BufBeg  :byte
+      8				     extrn	     BufEnd  :byte
+      9				     extrn	     BUF     :byte
+     10				     extrn	     COUNT   :byte
+     11				     extrn	     filespec:byte
+     12
+     13				     public	     Old28
+     14				     public	     New28
+     15
+     16				     ;=================================================
+     17				     ; New int 28h prints COUNT	bytes from BUF to filespec and set COUNT to 0
+     18				     ;=================================================
+     19
+     20
+     21	0100			     New28	     proc
+     22
+     23	0100  9C				     pushf
+     24	0101  50 52 1E 53 51 57	56+		     push    ax	dx ds bx cx di si es
+     25	      06
+     26
+     27
+     28	0109  8A 0E 0000e			     mov     cl, BufEnd
+     29	010D  2A 0E 0000e			     sub     cl, BufBeg
+     30	0111  80 F9 00				     cmp     cl, 0
+     31	0114  76 44				     jbe     @@End28
+     32
+     33	0116  BA 0000e				     mov     dx, offset	filespec
+     34	0119  0E				     push    cs
+     35	011A  1F				     pop     ds
+     36
+     37	011B  B8 3D02				     mov     ax, 3d02h
+     38	011E  CD 21				     int     21h
+     39	0120  8B D8				     mov     bx, ax
+     40
+     41	0122  73 0A				     jnc     @@cont
+     42	0124  8A D0				     mov     dl, al
+     43	0126  B8 0200				     mov     ax, 0200h
+     44	0129  CD 21				     int     21h
+     45	012B  EB 2D 90				     jmp     @@End28
+     46
+     47	012E  B8 4202		     @@cont:	     mov     ax, 4202h
+     48	0131  B9 0000				     mov     cx, 0
+     49	0134  BA 0000				     mov     dx, 0
+     50	0137  CD 21				     int     21h
+     51
+     52	0139  8A 0E 0000e			     mov     cl, BufEnd
+     53	013D  2A 0E 0000e			     sub     cl, BufBeg
+     54	0141  B5 00				     mov     ch, 00h
+     55	0143  BA 0000e				     mov     dx, offset	BUF
+     56	0146  02 16 0000e			     add     dl, BufBeg
+     57
+Turbo Assembler	 Version 4.1	    03/03/20 16:30:12	    Page 2
+new28.asm
+
+
+
+     58	014A  B8 4000				     mov     ax, 4000h
+     59	014D  CD 21				     int     21h
+     60
+     61				     ;		     mov     COUNT, 0
+     62	014F  A0 0000e				     mov     al, BufEnd
+     63	0152  A2 0000e				     mov     BufBeg, al
+     64
+     65	0155  B8 3E00				     mov     ax, 3e00h
+     66	0158  CD 21				     int     21h
+     67
+     68	015A  07 5E 5F 59 5B 1F	5A+  @@End28:	     pop     es	si di cx bx ds dx ax
+     69	      58
+     70
+     71				     ;		     mov     al, 20h
+     72				     ;		     out     20h, al
+     73
+     74	0162  9D				     popf
+     75	0163  CF				     iret
+     76	0164					     endp
+     77
+     78	0164			     .data
+     79
+     80	0000  0000		     Old28	     dw	     0
+     81	0002  0000				     dw	     0
+     82				     end
+Turbo Assembler	 Version 4.1	    03/03/20 16:30:12	    Page 3
+Symbol Table
+
+
+
+
+Symbol Name			  Type	 Value
+
+??DATE				  Text	 "03/03/20"
+??FILENAME			  Text	 "new28	  "
+??TIME				  Text	 "16:30:12"
+??VERSION			  Number 040A
+@32BIT				  Text	 0
+@@CONT				  Near	 DGROUP:012E
+@@END28				  Near	 DGROUP:015A
+@CODE				  Text	 DGROUP
+@CODESIZE			  Text	 0
+@CPU				  Text	 0103H
+@CURSEG				  Text	 _DATA
+@DATA				  Text	 DGROUP
+@DATASIZE			  Text	 0
+@FILENAME			  Text	 NEW28
+@INTERFACE			  Text	 000H
+@MODEL				  Text	 1
+@STACK				  Text	 DGROUP
+@WORDSIZE			  Text	 2
+BUF				  Byte	 DGROUP:---- Extern
+BUFBEG				  Byte	 DGROUP:---- Extern
+BUFEND				  Byte	 DGROUP:---- Extern
+COUNT				  Byte	 DGROUP:---- Extern
+FILESPEC			  Byte	 DGROUP:---- Extern
+NEW28				  Near	 DGROUP:0100
+OLD28				  Word	 DGROUP:0000
+
+Groups & Segments		  Bit Size Align  Combine Class
+
+DGROUP				  Group
+  _DATA				  16  0004 Word	  Public  DATA
+  _TEXT				  16  0164 Word	  Public  CODE
+

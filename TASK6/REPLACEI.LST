@@ -1,0 +1,77 @@
+Turbo Assembler	 Version 4.1	    03/03/20 17:23:07	    Page 1
+replacei.asm
+
+
+
+      1				     .186
+      2	0000			     .model tiny
+      3	0000			     .code
+      4				     org 100h
+      5
+      6				     ;=================================================
+      7				     ; Replace interuption
+      8				     ; Entry:DI: address where to save old interuption
+      9				     ;	     SI: address where is located new interuption
+     10				     ;	     CS: segment where to save
+     11				     ;	     CX: number	of interuption
+     12				     ; Destr:AX, BX, ES
+     13				     ;=================================================
+     14
+     15				     public	     rplInt
+     16
+     17	0100			     rplInt	     proc
+     18
+     19	0100  FA				     cli
+     20
+     21	0101  B8 0000				     mov     ax, 0h
+     22	0104  8E C0				     mov     es, ax
+     23
+     24	0106  8B D9				     mov     bx, cx
+     25	0108  C1 E3 02				     shl     bx, 2
+     26
+     27	010B  26: 8B 07				     mov     ax, word ptr es:[bx]
+     28	010E  2E: 89 05				     mov     word ptr cs:[di], ax
+     29	0111  26: 8B 47	02			     mov     ax, word ptr es:[bx+2]
+     30	0115  2E: 89 45	02			     mov     word ptr cs:[di+2], ax
+     31
+     32	0119  26: 89 37				     mov     word ptr es:[bx], si
+     33	011C  8C C8				     mov     ax, cs
+     34	011E  26: 89 47	02			     mov     word ptr es:[bx+2], ax
+     35
+     36	0122  FB				     sti
+     37	0123  C3				     ret
+     38	0124			     rplInt  endp
+     39
+     40				     end
+Turbo Assembler	 Version 4.1	    03/03/20 17:23:07	    Page 2
+Symbol Table
+
+
+
+
+Symbol Name			  Type	 Value
+
+??DATE				  Text	 "03/03/20"
+??FILENAME			  Text	 "replacei"
+??TIME				  Text	 "17:23:07"
+??VERSION			  Number 040A
+@32BIT				  Text	 0
+@CODE				  Text	 DGROUP
+@CODESIZE			  Text	 0
+@CPU				  Text	 0103H
+@CURSEG				  Text	 _TEXT
+@DATA				  Text	 DGROUP
+@DATASIZE			  Text	 0
+@FILENAME			  Text	 REPLACEI
+@INTERFACE			  Text	 000H
+@MODEL				  Text	 1
+@STACK				  Text	 DGROUP
+@WORDSIZE			  Text	 2
+RPLINT				  Near	 DGROUP:0100
+
+Groups & Segments		  Bit Size Align  Combine Class
+
+DGROUP				  Group
+  _DATA				  16  0000 Word	  Public  DATA
+  _TEXT				  16  0124 Word	  Public  CODE
+

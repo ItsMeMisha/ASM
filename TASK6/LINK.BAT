@@ -1,0 +1,1 @@
+tlink /t sort.obj replacei.obj new08.obj sortarr.obj framesou.obj endprog.obj

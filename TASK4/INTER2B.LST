@@ -1,0 +1,66 @@
+Turbo Assembler	 Version 4.1	    03/03/20 15:17:31	    Page 1
+inter2b.asm
+
+
+
+      1				     .186
+      2	0000			     .model tiny
+      3	0000			     .code
+      4				     org 100h
+      5
+      6				     extrn   rplInt  :proc
+      7
+      8				     extrn   Old09
+      9				     extrn   New09   :proc
+     10				     extrn   EndLabel
+     11	0100  33 C0		     Start:	     xor     ax, ax
+     12	0102  8E C0				     mov     es, ax
+     13	0104  B9 0009				     mov     cx, 9h
+     14	0107  BF 0000e				     mov     di, offset	Old09
+     15	010A  BE 0000e				     mov     si, offset	New09
+     16
+     17	010D  E8 0000e				     call    rplInt
+     18
+     19	0110  B8 3100				     mov     ax, 3100h
+     20	0113  BA 0000e				     mov     dx, offset	EndLabel
+     21	0116  C1 EA 04				     shr     dx, 4
+     22	0119  42				     inc     dx
+     23	011A  CD 21				     int     21h
+     24
+     25				     end     Start
+Turbo Assembler	 Version 4.1	    03/03/20 15:17:31	    Page 2
+Symbol Table
+
+
+
+
+Symbol Name			  Type	 Value
+
+??DATE				  Text	 "03/03/20"
+??FILENAME			  Text	 "inter2b "
+??TIME				  Text	 "15:17:31"
+??VERSION			  Number 040A
+@32BIT				  Text	 0
+@CODE				  Text	 DGROUP
+@CODESIZE			  Text	 0
+@CPU				  Text	 0103H
+@CURSEG				  Text	 _TEXT
+@DATA				  Text	 DGROUP
+@DATASIZE			  Text	 0
+@FILENAME			  Text	 INTER2B
+@INTERFACE			  Text	 000H
+@MODEL				  Text	 1
+@STACK				  Text	 DGROUP
+@WORDSIZE			  Text	 2
+ENDLABEL			  Word	 DGROUP:---- Extern
+NEW09				  Near	 DGROUP:---- Extern
+OLD09				  Word	 DGROUP:---- Extern
+RPLINT				  Near	 DGROUP:---- Extern
+START				  Near	 DGROUP:0100
+
+Groups & Segments		  Bit Size Align  Combine Class
+
+DGROUP				  Group
+  _DATA				  16  0000 Word	  Public  DATA
+  _TEXT				  16  011C Word	  Public  CODE
+

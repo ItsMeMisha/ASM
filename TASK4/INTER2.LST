@@ -1,4 +1,4 @@
-Turbo Assembler	 Version 4.1	    02/25/20 18:13:09	    Page 1
+Turbo Assembler	 Version 4.1	    02/29/20 21:39:49	    Page 1
 inter2.asm
 
 
@@ -15,11 +15,11 @@ inter2.asm
      10	0102  8E C0				     mov     es, ax
      11
      12	0104  FA				     cli
-     13	0105  BB 0024				     mov     bx, 9*4h
+     13	0105  BB 0024				     mov     bx, 9*4
      14	0108  26: 8B 07				     mov     ax, word ptr es:[bx]
-     15	010B  A3 016Fr				     mov     Old09, ax
+     15	010B  A3 016Dr				     mov     Old09, ax
      16	010E  26: 8B 47	02			     mov     ax, word ptr es:[bx+2]
-     17	0112  A3 0171r				     mov     Old09+2, ax
+     17	0112  A3 016Fr				     mov     Old09+2, ax
      18
      19	0115  26: C7 07	012Dr			     mov     word ptr es:[bx], offset New09
      20	011A  8C C8				     mov     ax, cs
@@ -49,32 +49,32 @@ inter2.asm
      44	0152  8A C2				     mov     al, dl
      45	0154  AB				     stosw
      46
-     47	0155  8A D0				     mov     dl, al
-     48	0157  E4 61				     in	     al, 61h
-     49	0159  8A E0				     mov     ah, al
-     50	015B  0C 80				     or	     al, 80h
-     51	015D  E6 61				     out     61h, al
-     52	015F  86 C4				     xchg    al, ah
-     53	0161  E6 61				     out     61h, al
+     47				     ;		     mov     dl, al
+     48	0155  E4 61				     in	     al, 61h
+     49	0157  8A E0				     mov     ah, al
+     50	0159  0C 80				     or	     al, 80h
+     51	015B  E6 61				     out     61h, al
+     52	015D  86 C4				     xchg    al, ah
+     53	015F  E6 61				     out     61h, al
      54
-     55	0163  B0 20				     mov     al, 20h
-     56	0165  E6 20				     out     20h, al
+     55	0161  B0 20				     mov     al, 20h
+     56	0163  E6 20				     out     20h, al
      57
-Turbo Assembler	 Version 4.1	    02/25/20 18:13:09	    Page 2
+Turbo Assembler	 Version 4.1	    02/29/20 21:39:49	    Page 2
 inter2.asm
 
 
 
-     58	0167  07 5E 5F 5A 59 5B	58		     pop     es	si di dx cx bx ax
+     58	0165  07 5E 5F 5A 59 5B	58		     pop     es	si di dx cx bx ax
      59
-     60	016E  EA				     db	     0eah
-     61	016F  0000		     Old09	     dw	     0
-     62	0171  0000				     dw	     0
+     60	016C  EA				     db	     0eah
+     61	016D  0000		     Old09	     dw	     0
+     62	016F  0000				     dw	     0
      63
-     64	0173					     endp
+     64	0171					     endp
      65
      66				     end     Start
-Turbo Assembler	 Version 4.1	    02/25/20 18:13:09	    Page 3
+Turbo Assembler	 Version 4.1	    02/29/20 21:39:49	    Page 3
 Symbol Table
 
 
@@ -82,9 +82,9 @@ Symbol Table
 
 Symbol Name			  Type	 Value
 
-??DATE				  Text	 "02/25/20"
+??DATE				  Text	 "02/29/20"
 ??FILENAME			  Text	 "inter2  "
-??TIME				  Text	 "18:13:09"
+??TIME				  Text	 "21:39:49"
 ??VERSION			  Number 040A
 @32BIT				  Text	 0
 @CODE				  Text	 DGROUP
@@ -102,12 +102,12 @@ AL2HEX				  Near	 DGROUP:---- Extern
 ENDLABEL			  Word	 DGROUP:---- Extern
 FRAMEDR				  Near	 DGROUP:---- Extern
 NEW09				  Near	 DGROUP:012D
-OLD09				  Word	 DGROUP:016F
+OLD09				  Word	 DGROUP:016D
 START				  Near	 DGROUP:0100
 
 Groups & Segments		  Bit Size Align  Combine Class
 
 DGROUP				  Group
   _DATA				  16  0000 Word	  Public  DATA
-  _TEXT				  16  0173 Word	  Public  CODE
+  _TEXT				  16  0171 Word	  Public  CODE
 

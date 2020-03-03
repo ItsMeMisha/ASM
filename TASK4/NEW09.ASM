@@ -3,29 +3,16 @@
 .code
 org 100h
 
-extrn	Al2Hex	:proc
+public	Old09
+public	New09
+
+extrn	al2hex	:proc
 extrn	framedr	:proc
 extrn 	EndLabel
-Start:		xor	ax, ax
-		mov	es, ax
 
-		cli
-		mov	bx, 9*4
-		mov	ax, word ptr es:[bx]
-		mov	Old09, ax
-		mov	ax, word ptr es:[bx+2]
-		mov	Old09+2, ax
-
-		mov	word ptr es:[bx], offset New09
-		mov	ax, cs
-		mov 	word ptr es:[bx+2], ax
-		sti
-
-		mov	ax, 3100h
-		mov	dx, offset EndLabel
-		shr 	dx, 4
-		inc	dx
-		int 	21h
+;=================================================
+; New int 09h that writes scancode in hex of the pushed key in frame
+;=================================================
 
 New09	proc
 		push	ax bx cx dx di si es
@@ -63,4 +50,4 @@ Old09		dw 	0
 
 		endp
 
-end	Start
+end
