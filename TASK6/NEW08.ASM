@@ -2,10 +2,12 @@
 .model tiny
 .code
 org	100h
+locals	@@
 
 extrn	sortfwd	:proc
 extrn	sortbkd	:proc
 extrn	printl	:proc
+extrn	framedr	:proc
 
 public	New08
 public	Old08
@@ -20,6 +22,11 @@ New08		proc
 		pusha
 		push	es si di ds
 
+		mov	di, 0d
+		mov	cx, 10d
+		mov	dx, 4d
+		call	framedr
+
 		mov	ax, cs
 		mov	es, ax
 
@@ -27,21 +34,21 @@ New08		proc
 		mov	cx, 8d
 
 		call	sortfwd
-
+		
 		mov	ax, cs
 		mov	ds, ax
 
 		mov	si, offset ARR
-		mov	di, 2d
+		mov	di, 324d
 		
 		call	printl
 
-		mov	ax, cs
-		mov	es, ax
-
 		mov	cx, 0ffffh
-pause:		
-		loop	pause
+@@pause:		
+		loop	@@pause
+
+		push	cs
+		pop	es
 
 		mov	di, offset ARR
 		mov	cx, 8d
@@ -52,7 +59,7 @@ pause:
 		mov	ds, ax
 
 		mov	si, offset ARR
-		mov	di, 162d
+		mov	di, 484d
 
 		call	printl
 
@@ -69,7 +76,6 @@ endp
 
 .data
 
-ARR	db  	41h, 47h, 46h, 45h, 44h, 43h, 42h, 48h
-	db 	0
+ARR	db  	41h, 47h, 46h, 45h, 44h, 43h, 42h, 48h, 0h
 
 end

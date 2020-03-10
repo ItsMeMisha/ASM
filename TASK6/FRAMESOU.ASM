@@ -188,6 +188,7 @@ frext	endp
 ; Print Line in video memory
 ; Entry:SI offset of line
 ;	DI address in video memory
+;	DS segment where line is
 ; Destr:AL, DI, ES
 ;=================================================
 
@@ -195,6 +196,7 @@ public 	printl
 
 printl	proc
 
+		cld
 		push	0b800h
 		pop	es
 		lodsb

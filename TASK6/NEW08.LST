@@ -1,4 +1,4 @@
-Turbo Assembler	 Version 4.1	    03/03/20 18:29:12	    Page 1
+Turbo Assembler	 Version 4.1	    03/10/20 14:47:24	    Page 1
 new08.asm
 
 
@@ -7,84 +7,90 @@ new08.asm
       2	0000			     .model tiny
       3	0000			     .code
       4				     org     100h
-      5
-      6				     extrn   sortfwd :proc
-      7				     extrn   sortbkd :proc
-      8				     extrn   printl  :proc
-      9
-     10				     public  New08
-     11				     public  Old08
-     12
-     13				     ;=================================================
-     14				     ; New int 08h sort	ARR in different orders
+      5				     locals  @@
+      6
+      7				     extrn   sortfwd :proc
+      8				     extrn   sortbkd :proc
+      9				     extrn   printl  :proc
+     10				     extrn   framedr :proc
+     11
+     12				     public  New08
+     13				     public  Old08
+     14
      15				     ;=================================================
-     16
-     17	0100			     New08	     proc
+     16				     ; New int 08h sort	ARR in different orders
+     17				     ;=================================================
      18
-     19	0100  9C				     pushf
-     20	0101  60				     pusha
-     21	0102  06 56 57 1E			     push    es	si di ds
-     22
-     23	0106  8C C8				     mov     ax, cs
-     24	0108  8E C0				     mov     es, ax
-     25
-     26	010A  BF 0000r				     mov     di, offset	ARR
-     27	010D  B9 0008				     mov     cx, 8d
-     28
-     29	0110  E8 0000e				     call    sortfwd
-     30
-     31	0113  8C C8				     mov     ax, cs
-     32	0115  8E D8				     mov     ds, ax
-     33
-     34	0117  BE 0000r				     mov     si, offset	ARR
-     35	011A  BF 0002				     mov     di, 2d
-     36
-     37	011D  E8 0000e				     call    printl
-     38
-     39	0120  8C C8				     mov     ax, cs
-     40	0122  8E C0				     mov     es, ax
-     41
-     42	0124  B9 FFFF				     mov     cx, 0ffffh
-     43	0127			     pause:
-     44	0127  E2 FE				     loop    pause
+     19	0100			     New08	     proc
+     20
+     21	0100  9C				     pushf
+     22	0101  60				     pusha
+     23	0102  06 56 57 1E			     push    es	si di ds
+     24
+     25	0106  BF 0000				     mov     di, 0d
+     26	0109  B9 000A				     mov     cx, 10d
+     27	010C  BA 0004				     mov     dx, 4d
+     28	010F  E8 0000e				     call    framedr
+     29
+     30	0112  8C C8				     mov     ax, cs
+     31	0114  8E C0				     mov     es, ax
+     32
+     33	0116  BF 0000r				     mov     di, offset	ARR
+     34	0119  B9 0008				     mov     cx, 8d
+     35
+     36	011C  E8 0000e				     call    sortfwd
+     37
+     38	011F  8C C8				     mov     ax, cs
+     39	0121  8E D8				     mov     ds, ax
+     40
+     41	0123  BE 0000r				     mov     si, offset	ARR
+     42	0126  BF 0144				     mov     di, 324d
+     43
+     44	0129  E8 0000e				     call    printl
      45
-     46	0129  BF 0000r				     mov     di, offset	ARR
-     47	012C  B9 0008				     mov     cx, 8d
-     48
-     49	012F  E8 0000e				     call    sortbkd
-     50
-     51	0132  8C C8				     mov     ax, cs
-     52	0134  8E D8				     mov     ds, ax
-     53
-     54	0136  BE 0000r				     mov     si, offset	ARR
-     55	0139  BF 00A2				     mov     di, 162d
-     56
-     57	013C  E8 0000e				     call    printl
-Turbo Assembler	 Version 4.1	    03/03/20 18:29:12	    Page 2
+     46	012C  B9 FFFF				     mov     cx, 0ffffh
+     47	012F			     @@pause:
+     48	012F  E2 FE				     loop    @@pause
+     49
+     50	0131  0E				     push    cs
+     51	0132  07				     pop     es
+     52
+     53	0133  BF 0000r				     mov     di, offset	ARR
+     54	0136  B9 0008				     mov     cx, 8d
+     55
+     56	0139  E8 0000e				     call    sortbkd
+     57
+Turbo Assembler	 Version 4.1	    03/10/20 14:47:24	    Page 2
 new08.asm
 
 
 
-     58
-     59	013F  1F 5F 5E 07			     pop     ds	di si es
-     60	0143  61				     popa
-     61	0144  9D				     popf
-     62
-     63	0145  EA				     db	     0eah
-     64	0146  0000		     Old08	     dw	     0
-     65	0148  0000				     dw	     0
-     66
-     67	014A  CF				     iret
-     68	014B			     endp
+     58	013C  8C C8				     mov     ax, cs
+     59	013E  8E D8				     mov     ds, ax
+     60
+     61	0140  BE 0000r				     mov     si, offset	ARR
+     62	0143  BF 01E4				     mov     di, 484d
+     63
+     64	0146  E8 0000e				     call    printl
+     65
+     66	0149  1F 5F 5E 07			     pop     ds	di si es
+     67	014D  61				     popa
+     68	014E  9D				     popf
      69
-     70	014B			     .data
-     71
-     72	0000  41 47 46 45 44 43	42+  ARR     db	     41h, 47h, 46h, 45h, 44h, 43h, 42h,	48h
-     73	      48
-     74	0008  00			     db	     0
-     75
-     76				     end
-Turbo Assembler	 Version 4.1	    03/03/20 18:29:12	    Page 3
+     70	014F  EA				     db	     0eah
+     71	0150  0000		     Old08	     dw	     0
+     72	0152  0000				     dw	     0
+     73
+     74	0154  CF				     iret
+     75	0155			     endp
+     76
+     77	0155			     .data
+     78
+     79	0000  41 47 46 45 44 43	42+  ARR     db	     41h, 47h, 46h, 45h, 44h, 43h, 42h,	48h, 0h
+     80	      48 00
+     81
+     82				     end
+Turbo Assembler	 Version 4.1	    03/10/20 14:47:24	    Page 3
 Symbol Table
 
 
@@ -92,11 +98,12 @@ Symbol Table
 
 Symbol Name			  Type	 Value
 
-??DATE				  Text	 "03/03/20"
+??DATE				  Text	 "03/10/20"
 ??FILENAME			  Text	 "new08	  "
-??TIME				  Text	 "18:29:12"
+??TIME				  Text	 "14:47:24"
 ??VERSION			  Number 040A
 @32BIT				  Text	 0
+@@PAUSE				  Near	 DGROUP:012F
 @CODE				  Text	 DGROUP
 @CODESIZE			  Text	 0
 @CPU				  Text	 0103H
@@ -109,9 +116,9 @@ Symbol Name			  Type	 Value
 @STACK				  Text	 DGROUP
 @WORDSIZE			  Text	 2
 ARR				  Byte	 DGROUP:0000
+FRAMEDR				  Near	 DGROUP:---- Extern
 NEW08				  Near	 DGROUP:0100
-OLD08				  Word	 DGROUP:0146
-PAUSE				  Near	 DGROUP:0127
+OLD08				  Word	 DGROUP:0150
 PRINTL				  Near	 DGROUP:---- Extern
 SORTBKD				  Near	 DGROUP:---- Extern
 SORTFWD				  Near	 DGROUP:---- Extern
@@ -120,5 +127,5 @@ Groups & Segments		  Bit Size Align  Combine Class
 
 DGROUP				  Group
   _DATA				  16  0009 Word	  Public  DATA
-  _TEXT				  16  014B Word	  Public  CODE
+  _TEXT				  16  0155 Word	  Public  CODE
 

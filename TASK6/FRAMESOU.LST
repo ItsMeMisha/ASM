@@ -1,4 +1,4 @@
-Turbo Assembler	 Version 4.1	    03/03/20 17:45:46	    Page 1
+Turbo Assembler	 Version 4.1	    03/09/20 21:00:32	    Page 1
 framesou.asm
 
 
@@ -60,7 +60,7 @@ framesou.asm
      55				     ;	     DX	- height of the	frame
      56				     ; Destr: AX, BX, SI, ES
      57				     ;=================================================
-Turbo Assembler	 Version 4.1	    03/03/20 17:45:46	    Page 2
+Turbo Assembler	 Version 4.1	    03/09/20 21:00:32	    Page 2
 framesou.asm
 
 
@@ -122,7 +122,7 @@ framesou.asm
     112	0153  2B F9				     sub     di, cx
     113	0155  D1 E9				     shr     cx, 1
     114	0157  81 C7 009C			     add     di, 156d
-Turbo Assembler	 Version 4.1	    03/03/20 17:45:46	    Page 3
+Turbo Assembler	 Version 4.1	    03/09/20 21:00:32	    Page 3
 framesou.asm
 
 
@@ -184,7 +184,7 @@ framesou.asm
     169	01A9  83 C1 06				     add     cx, 6
     170	01AC  83 C2 02				     add     dx, 2
     171	01AF  E8 FF8C				     call    framedr
-Turbo Assembler	 Version 4.1	    03/03/20 17:45:46	    Page 4
+Turbo Assembler	 Version 4.1	    03/09/20 21:00:32	    Page 4
 framesou.asm
 
 
@@ -208,29 +208,31 @@ framesou.asm
     188				     ; Print Line in video memory
     189				     ; Entry:SI	offset of line
     190				     ;	     DI	address	in video memory
-    191				     ; Destr:AL, DI, ES
-    192				     ;=================================================
-    193
-    194				     public  printl
-    195
-    196	01C7			     printl  proc
-    197
-    198	01C7  68 B800				     push    0b800h
-    199	01CA  07				     pop     es
-    200	01CB  AC				     lodsb
-    201	01CC  AA		     @@NEXT:	     stosb
-    202	01CD  47				     inc di
-    203	01CE  AC				     lodsb
-    204	01CF  3C 00				     cmp     al, 00
-    205	01D1  75 F9				     jne     @@NEXT
-    206
-    207	01D3  C3				     ret
+    191				     ;	     DS	segment	where line is
+    192				     ; Destr:AL, DI, ES
+    193				     ;=================================================
+    194
+    195				     public  printl
+    196
+    197	01C7			     printl  proc
+    198
+    199	01C7  FC				     cld
+    200	01C8  68 B800				     push    0b800h
+    201	01CB  07				     pop     es
+    202	01CC  AC				     lodsb
+    203	01CD  AA		     @@NEXT:	     stosb
+    204	01CE  47				     inc di
+    205	01CF  AC				     lodsb
+    206	01D0  3C 00				     cmp     al, 00
+    207	01D2  75 F9				     jne     @@NEXT
     208
-    209	01D4			     printl  endp
+    209	01D4  C3				     ret
     210
-    211
-    212				     end
-Turbo Assembler	 Version 4.1	    03/03/20 17:45:46	    Page 5
+    211	01D5			     printl  endp
+    212
+    213
+    214				     end
+Turbo Assembler	 Version 4.1	    03/09/20 21:00:32	    Page 5
 Symbol Table
 
 
@@ -238,14 +240,14 @@ Symbol Table
 
 Symbol Name			  Type	 Value
 
-??DATE				  Text	 "03/03/20"
+??DATE				  Text	 "03/09/20"
 ??FILENAME			  Text	 "framesou"
-??TIME				  Text	 "17:45:46"
+??TIME				  Text	 "21:00:32"
 ??VERSION			  Number 040A
 @32BIT				  Text	 0
 @@DRAW				  Near	 DGROUP:01A5
 @@MID				  Near	 DGROUP:0165
-@@NEXT				  Near	 DGROUP:01CC
+@@NEXT				  Near	 DGROUP:01CD
 @@RIGHTSH			  Near	 DGROUP:012F
 @CODE				  Text	 DGROUP
 @CODESIZE			  Text	 0
@@ -277,5 +279,5 @@ Groups & Segments		  Bit Size Align  Combine Class
 
 DGROUP				  Group
   _DATA				  16  0000 Word	  Public  DATA
-  _TEXT				  16  01D4 Word	  Public  CODE
+  _TEXT				  16  01D5 Word	  Public  CODE
 

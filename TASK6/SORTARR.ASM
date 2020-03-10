@@ -30,22 +30,23 @@ sortfwd		proc
 		inc	di
 
 @@insideCy:	cmp	al, byte ptr es:[di]
-		jae	@@bigeq
+		jb	@@bigeq
 
 		mov	ah, byte ptr es:[di]
 		mov	byte ptr es:[di], al
 		mov	byte ptr es:[si], ah
-		mov	si, di
+		mov	al, ah
 
-@@bigeq:	dec	cx
-		cmp	cx, 0	
-		ja	@@insideCy
+@@bigeq:	inc	di
+		dec	cx
+		cmp	cx, 1
+		jne	@@insideCy
 		
 		pop	di
 		pop	cx
 		dec	cx
-		cmp	cx, 0
-		ja	@@sortStart
+		cmp	cx, 1
+		jne	@@sortStart
 		
 		ret
 sortfwd		endp
@@ -73,21 +74,23 @@ sortbkd		proc
 		inc	di
 
 @@insideCy2:	cmp	al, byte ptr es:[di]
-		jbe	@@lesseq
+		ja	@@lesseq
+
 		mov	ah, byte ptr es:[di]
 		mov	byte ptr es:[di], al
 		mov	byte ptr es:[si], ah
-		mov	si, di
-		
-@@lesseq:	dec	cx
-		cmp	cx, 0
-		ja	@@insideCy2
+		mov	al, ah
+
+@@lesseq:	inc	di
+		dec	cx
+		cmp	cx, 1
+		jne	@@insideCy2
 		
 		pop	di
 		pop	cx
 		dec	cx
-		cmp	cx, 0
-		ja	@@sortStart2
+		cmp	cx, 1
+		jne	@@sortStart2
 		
 		ret
 sortbkd		endp

@@ -3,6 +3,8 @@
 .code
 org 100h
 
+locals	@@
+
 public	Old09
 public	New09
 
@@ -22,8 +24,16 @@ New09	proc
 		mov	cx, 20
 		mov	dx, 5
 		call	framedr
+
 		in	al, 60h
-		call	Al2Hex
+		cmp	al, 21h
+		jne	@@toHex
+		mov	di, (6*80+28)*2
+		mov	cx, 24
+		mov	dx, 9
+		call	framedr
+
+@@toHex:	call	Al2Hex
 		mov 	di, (10*80+40)*2
 		mov	ah, 4eh
 		mov	al, dh
@@ -31,7 +41,6 @@ New09	proc
 		mov	al, dl
 		stosw
 
-;		mov	dl, al
 		in	al, 61h
 		mov	ah, al
 		or	al, 80h

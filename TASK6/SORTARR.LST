@@ -1,4 +1,4 @@
-Turbo Assembler	 Version 4.1	    03/03/20 18:28:37	    Page 1
+Turbo Assembler	 Version 4.1	    03/09/20 21:14:43	    Page 1
 sortarr.asm
 
 
@@ -35,75 +35,78 @@ sortarr.asm
      30	010D  47				     inc     di
      31
      32	010E  26: 3A 05		     @@insideCy:     cmp     al, byte ptr es:[di]
-     33	0111  73 0B				     jae     @@bigeq
+     33	0111  72 0B				     jb	     @@bigeq
      34
      35	0113  26: 8A 25				     mov     ah, byte ptr es:[di]
      36	0116  26: 88 05				     mov     byte ptr es:[di], al
      37	0119  26: 88 24				     mov     byte ptr es:[si], ah
-     38	011C  8B F7				     mov     si, di
+     38	011C  8A C4				     mov     al, ah
      39
-     40	011E  49		     @@bigeq:	     dec     cx
-     41	011F  83 F9 00				     cmp     cx, 0
-     42	0122  77 EA				     ja	     @@insideCy
-     43
-     44	0124  5F				     pop     di
-     45	0125  59				     pop     cx
-     46	0126  49				     dec     cx
-     47	0127  83 F9 00				     cmp     cx, 0
-     48	012A  77 D6				     ja	     @@sortStart
-     49
-     50	012C  C3				     ret
-     51	012D			     sortfwd	     endp
-     52
-     53				     ;=================================================
-     54				     ; Sortes array of bytes reverse
-     55				     ; Entry:ES	- segment where	array is
-     56				     ;	     DI	- address of array in segment
-     57				     ;	     CX	- size of array
-Turbo Assembler	 Version 4.1	    03/03/20 18:28:37	    Page 2
+     40	011E  47		     @@bigeq:	     inc     di
+     41	011F  49				     dec     cx
+     42	0120  83 F9 01				     cmp     cx, 1
+     43	0123  75 E9				     jne     @@insideCy
+     44
+     45	0125  5F				     pop     di
+     46	0126  59				     pop     cx
+     47	0127  49				     dec     cx
+     48	0128  83 F9 01				     cmp     cx, 1
+     49	012B  75 D5				     jne     @@sortStart
+     50
+     51	012D  C3				     ret
+     52	012E			     sortfwd	     endp
+     53
+     54				     ;=================================================
+     55				     ; Sortes array of bytes reverse
+     56				     ; Entry:ES	- segment where	array is
+     57				     ;	     DI	- address of array in segment
+Turbo Assembler	 Version 4.1	    03/09/20 21:14:43	    Page 2
 sortarr.asm
 
 
 
-     58				     ; Dstr: CX, SI, AX, BX, DX
-     59				     ;=================================================
-     60
-     61	012D			     sortbkd	     proc
-     62
-     63	012D  8B D9				     mov     bx, cx
-     64
-     65	012F  51		     @@sortStart2:   push    cx	     ;double cycle begin
-     66	0130  57				     push    di
-     67
-     68	0131  03 FB				     add     di, bx
-     69	0133  2B F9				     sub     di, cx
-     70
-     71	0135  26: 8A 05				     mov     al, byte ptr es:[di]
-     72	0138  8B F7				     mov     si, di
-     73	013A  47				     inc     di
-     74
-     75	013B  26: 3A 05		     @@insideCy2:    cmp     al, byte ptr es:[di]
-     76	013E  76 0B				     jbe     @@lesseq
-     77	0140  26: 8A 25				     mov     ah, byte ptr es:[di]
-     78	0143  26: 88 05				     mov     byte ptr es:[di], al
-     79	0146  26: 88 24				     mov     byte ptr es:[si], ah
-     80	0149  8B F7				     mov     si, di
-     81
-     82	014B  49		     @@lesseq:	     dec     cx
-     83	014C  83 F9 00				     cmp     cx, 0
-     84	014F  77 EA				     ja	     @@insideCy2
-     85
-     86	0151  5F				     pop     di
-     87	0152  59				     pop     cx
-     88	0153  49				     dec     cx
-     89	0154  83 F9 00				     cmp     cx, 0
-     90	0157  77 D6				     ja	     @@sortStart2
-     91
-     92	0159  C3				     ret
-     93	015A			     sortbkd	     endp
+     58				     ;	     CX	- size of array
+     59				     ; Dstr: CX, SI, AX, BX, DX
+     60				     ;=================================================
+     61
+     62	012E			     sortbkd	     proc
+     63
+     64	012E  8B D9				     mov     bx, cx
+     65
+     66	0130  51		     @@sortStart2:   push    cx	     ;double cycle begin
+     67	0131  57				     push    di
+     68
+     69	0132  03 FB				     add     di, bx
+     70	0134  2B F9				     sub     di, cx
+     71
+     72	0136  26: 8A 05				     mov     al, byte ptr es:[di]
+     73	0139  8B F7				     mov     si, di
+     74	013B  47				     inc     di
+     75
+     76	013C  26: 3A 05		     @@insideCy2:    cmp     al, byte ptr es:[di]
+     77	013F  77 0B				     ja	     @@lesseq
+     78
+     79	0141  26: 8A 25				     mov     ah, byte ptr es:[di]
+     80	0144  26: 88 05				     mov     byte ptr es:[di], al
+     81	0147  26: 88 24				     mov     byte ptr es:[si], ah
+     82	014A  8A C4				     mov     al, ah
+     83
+     84	014C  47		     @@lesseq:	     inc     di
+     85	014D  49				     dec     cx
+     86	014E  83 F9 01				     cmp     cx, 1
+     87	0151  75 E9				     jne     @@insideCy2
+     88
+     89	0153  5F				     pop     di
+     90	0154  59				     pop     cx
+     91	0155  49				     dec     cx
+     92	0156  83 F9 01				     cmp     cx, 1
+     93	0159  75 D5				     jne     @@sortStart2
      94
-     95				     end
-Turbo Assembler	 Version 4.1	    03/03/20 18:28:37	    Page 3
+     95	015B  C3				     ret
+     96	015C			     sortbkd	     endp
+     97
+     98				     end
+Turbo Assembler	 Version 4.1	    03/09/20 21:14:43	    Page 3
 Symbol Table
 
 
@@ -111,17 +114,17 @@ Symbol Table
 
 Symbol Name			  Type	 Value
 
-??DATE				  Text	 "03/03/20"
+??DATE				  Text	 "03/09/20"
 ??FILENAME			  Text	 "sortarr "
-??TIME				  Text	 "18:28:37"
+??TIME				  Text	 "21:14:43"
 ??VERSION			  Number 040A
 @32BIT				  Text	 0
 @@BIGEQ				  Near	 DGROUP:011E
 @@INSIDECY			  Near	 DGROUP:010E
-@@INSIDECY2			  Near	 DGROUP:013B
-@@LESSEQ			  Near	 DGROUP:014B
+@@INSIDECY2			  Near	 DGROUP:013C
+@@LESSEQ			  Near	 DGROUP:014C
 @@SORTSTART			  Near	 DGROUP:0102
-@@SORTSTART2			  Near	 DGROUP:012F
+@@SORTSTART2			  Near	 DGROUP:0130
 @CODE				  Text	 DGROUP
 @CODESIZE			  Text	 0
 @CPU				  Text	 0103H
@@ -133,12 +136,12 @@ Symbol Name			  Type	 Value
 @MODEL				  Text	 1
 @STACK				  Text	 DGROUP
 @WORDSIZE			  Text	 2
-SORTBKD				  Near	 DGROUP:012D
+SORTBKD				  Near	 DGROUP:012E
 SORTFWD				  Near	 DGROUP:0100
 
 Groups & Segments		  Bit Size Align  Combine Class
 
 DGROUP				  Group
   _DATA				  16  0000 Word	  Public  DATA
-  _TEXT				  16  015A Word	  Public  CODE
+  _TEXT				  16  015C Word	  Public  CODE
 
