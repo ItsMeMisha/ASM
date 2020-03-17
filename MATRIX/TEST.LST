@@ -1,0 +1,51 @@
+Turbo Assembler	 Version 4.1	    03/15/20 22:28:20	    Page 1
+test.asm
+
+
+
+      1				     .186
+      2	0000			     .model tiny
+      3
+      4	0000			     .code
+      5				     org     100h
+      6				     extrn   scrsft  :proc
+      7
+      8	0100  E8 0000e		     Start:	     call    scrsft
+      9
+     10	0103  B8 4C00				     mov     ax, 4c00h
+     11	0106  CD 21				     int     21h
+     12
+     13				     end	     Start
+Turbo Assembler	 Version 4.1	    03/15/20 22:28:20	    Page 2
+Symbol Table
+
+
+
+
+Symbol Name			  Type	 Value
+
+??DATE				  Text	 "03/15/20"
+??FILENAME			  Text	 "test	  "
+??TIME				  Text	 "22:28:20"
+??VERSION			  Number 040A
+@32BIT				  Text	 0
+@CODE				  Text	 DGROUP
+@CODESIZE			  Text	 0
+@CPU				  Text	 0103H
+@CURSEG				  Text	 _TEXT
+@DATA				  Text	 DGROUP
+@DATASIZE			  Text	 0
+@FILENAME			  Text	 TEST
+@INTERFACE			  Text	 000H
+@MODEL				  Text	 1
+@STACK				  Text	 DGROUP
+@WORDSIZE			  Text	 2
+SCRSFT				  Near	 DGROUP:---- Extern
+START				  Near	 DGROUP:0100
+
+Groups & Segments		  Bit Size Align  Combine Class
+
+DGROUP				  Group
+  _DATA				  16  0000 Word	  Public  DATA
+  _TEXT				  16  0108 Word	  Public  CODE
+

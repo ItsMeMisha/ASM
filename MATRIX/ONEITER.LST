@@ -1,0 +1,94 @@
+Turbo Assembler	 Version 4.1	    03/16/20 00:06:32	    Page 1
+oneiter.asm
+
+
+
+      1				     .186
+      2	0000			     .model tiny
+      3
+      4				     locals  @@
+      5
+      6	0000			     .code
+      7				     org     100h
+      8
+      9				     public  oneiter
+     10
+     11				     ;=================================================
+     12				     ; Moves spaces to upper line and significant chars	to down
+     13				     ; Entry: AX number	of the upper line
+     14				     ; Destr: AX, BX, CX, ES, AX
+     15				     ;=================================================
+     16
+     17	0100			     oneiter	     proc
+     18
+     19	0100  60				     pusha
+     20	0101  06 1E 56 57			     push    es	ds si di
+     21
+     22	0105  68 B800				     push    0b800h
+     23	0108  07				     pop     es
+     24
+     25	0109  8B D8				     mov     bx, ax
+     26				     ;		     shl     ax, 6
+     27				     ;		     shl     bx, 4
+     28				     ;		     add     bx, ax
+     29	010B  D1 E3				     shl     bx, 1
+     30
+     31	010D  B9 0017				     mov     cx, 23d
+     32
+     33	0110  26: 8A 87	00A0	     @@xchange:	     mov     al, byte ptr es:[bx+160]
+     34	0115  3C 20				     cmp     al,  ' '
+     35	0117  74 04				     je	     cs:@@chng
+     36
+     37	0119  3C 00				     cmp     al, 00h
+     38	011B  75 10				     jne     cs:@@LOOP
+     39
+     40	011D  26: 8A 87	00A0	     @@chng:	     mov     al, byte ptr es:[bx+160]
+     41	0122  26: 8A 27				     mov     ah, byte ptr es:[bx]
+     42	0125  26: 88 07				     mov     byte ptr es:[bx], al
+     43	0128  26: 88 A7	00A0			     mov     byte ptr es:[bx+160], ah
+     44
+     45	012D  81 C3 0160	     @@LOOP:	     add     bx, 160h
+     46
+     47	0131  E2 DD				     loop    cs:@@xchange
+     48
+     49	0133  5F 5E 1F 07			     pop di si ds es
+     50	0137  61				     popa
+     51
+     52	0138  C3				     ret
+     53	0139					     endp
+     54				     end
+Turbo Assembler	 Version 4.1	    03/16/20 00:06:32	    Page 2
+Symbol Table
+
+
+
+
+Symbol Name			  Type	 Value
+
+??DATE				  Text	 "03/16/20"
+??FILENAME			  Text	 "oneiter "
+??TIME				  Text	 "00:06:32"
+??VERSION			  Number 040A
+@32BIT				  Text	 0
+@@CHNG				  Near	 DGROUP:011D
+@@LOOP				  Near	 DGROUP:012D
+@@XCHANGE			  Near	 DGROUP:0110
+@CODE				  Text	 DGROUP
+@CODESIZE			  Text	 0
+@CPU				  Text	 0103H
+@CURSEG				  Text	 _TEXT
+@DATA				  Text	 DGROUP
+@DATASIZE			  Text	 0
+@FILENAME			  Text	 ONEITER
+@INTERFACE			  Text	 000H
+@MODEL				  Text	 1
+@STACK				  Text	 DGROUP
+@WORDSIZE			  Text	 2
+ONEITER				  Near	 DGROUP:0100
+
+Groups & Segments		  Bit Size Align  Combine Class
+
+DGROUP				  Group
+  _DATA				  16  0000 Word	  Public  DATA
+  _TEXT				  16  0139 Word	  Public  CODE
+

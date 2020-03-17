@@ -1,0 +1,1 @@
+tlink /t matrix.obj new08.obj new09.obj scrshift.obj replacei.obj oneiter.obj setclr.obj framesou.obj endprog.obj

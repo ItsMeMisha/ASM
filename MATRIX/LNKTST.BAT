@@ -1,0 +1,1 @@
+tlink /t test.obj oneiter.obj
