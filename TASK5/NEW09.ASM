@@ -21,7 +21,7 @@ New09		proc
 		push	ax ds di bx es
 
 		pushf
-		call	dword ptr [Old09]
+		call	dword ptr cs:[Old09]
 		popf
 
 		pushf
@@ -30,11 +30,11 @@ New09		proc
 		mov	ax, 00h
 		int	16h
 
-		mov	bl, BufEnd
+		mov	bl, cs:BufEnd
 		mov	bh, 00h
-		mov	BUF+bx, al
+		mov	cs:BUF+bx, al
 ;		inc	COUNT
-		inc	BufEnd
+		inc	cs:BufEnd
 
 		popf
 

@@ -1,4 +1,4 @@
-Turbo Assembler	 Version 4.1	    03/03/20 16:26:16	    Page 1
+Turbo Assembler	 Version 4.1	    03/10/20 16:56:37	    Page 1
 new09.asm
 
 
@@ -35,44 +35,44 @@ new09.asm
      30	010C  B8 0000				     mov     ax, 00h
      31	010F  CD 16				     int     16h
      32
-     33	0111  8A 1E 0000e			     mov     bl, BufEnd
-     34	0115  B7 00				     mov     bh, 00h
-     35	0117  88 87 0000e			     mov     BUF+bx, al
-     36	011B  FE 06 0000e			     inc     COUNT
-     37	011F  FE 06 0000e			     inc     BufEnd
+     33	0111  2E: 8A 1E	0000e			     mov     bl, cs:BufEnd
+     34	0116  B7 00				     mov     bh, 00h
+     35	0118  2E: 88 87	0000e			     mov     cs:BUF+bx,	al
+     36				     ;		     inc     COUNT
+     37	011D  2E: FE 06	0000e			     inc     cs:BufEnd
      38
-     39	0123  9D				     popf
+     39	0122  9D				     popf
      40
-     41	0124  07 5B 5F 1F 58			     pop     es	bx di ds ax
+     41	0123  07 5B 5F 1F 58			     pop     es	bx di ds ax
      42
      43				     ;		     db	     0eah
      44				     ;Old09	     dw	     0h
      45				     ;		     dw	     0h
      46
-     47	0129  E4 61				     in	     al, 61h
-     48	012B  8A E0				     mov     ah, al
-     49	012D  0C 80				     or	     al, 80h
-     50	012F  E6 61				     out     61h, al
-     51	0131  86 E0				     xchg    ah, al
-     52	0133  E6 61				     out     61h, al
+     47	0128  E4 61				     in	     al, 61h
+     48	012A  8A E0				     mov     ah, al
+     49	012C  0C 80				     or	     al, 80h
+     50	012E  E6 61				     out     61h, al
+     51	0130  86 E0				     xchg    ah, al
+     52	0132  E6 61				     out     61h, al
      53
-     54	0135  B0 20				     mov     al, 20h
-     55	0137  E6 20				     out     20h, al
+     54	0134  B0 20				     mov     al, 20h
+     55	0136  E6 20				     out     20h, al
      56
-     57	0139  CF				     iret
-Turbo Assembler	 Version 4.1	    03/03/20 16:26:16	    Page 2
+     57	0138  CF				     iret
+Turbo Assembler	 Version 4.1	    03/10/20 16:56:37	    Page 2
 new09.asm
 
 
 
-     58	013A					     endp
+     58	0139					     endp
      59
-     60	013A			     .data
+     60	0139			     .data
      61
      62	0000  0000		     Old09	     dw	     0
      63	0002  0000				     dw	     0
      64				     end
-Turbo Assembler	 Version 4.1	    03/03/20 16:26:16	    Page 3
+Turbo Assembler	 Version 4.1	    03/10/20 16:56:37	    Page 3
 Symbol Table
 
 
@@ -80,9 +80,9 @@ Symbol Table
 
 Symbol Name			  Type	 Value
 
-??DATE				  Text	 "03/03/20"
+??DATE				  Text	 "03/10/20"
 ??FILENAME			  Text	 "new09	  "
-??TIME				  Text	 "16:26:16"
+??TIME				  Text	 "16:56:37"
 ??VERSION			  Number 040A
 @32BIT				  Text	 0
 @CODE				  Text	 DGROUP
@@ -107,5 +107,5 @@ Groups & Segments		  Bit Size Align  Combine Class
 
 DGROUP				  Group
   _DATA				  16  0004 Word	  Public  DATA
-  _TEXT				  16  013A Word	  Public  CODE
+  _TEXT				  16  0139 Word	  Public  CODE
 

@@ -1,4 +1,4 @@
-Turbo Assembler	 Version 4.1	    03/10/20 16:57:20	    Page 1
+Turbo Assembler	 Version 4.1	    03/10/20 16:58:20	    Page 1
 endprog.asm
 
 
@@ -10,7 +10,7 @@ endprog.asm
       5				     public EndLabel
       6	0100			     EndLabel:
       7				     end
-Turbo Assembler	 Version 4.1	    03/10/20 16:57:20	    Page 2
+Turbo Assembler	 Version 4.1	    03/10/20 16:58:20	    Page 2
 Symbol Table
 
 
@@ -20,7 +20,7 @@ Symbol Name			  Type	 Value
 
 ??DATE				  Text	 "03/10/20"
 ??FILENAME			  Text	 "endprog "
-??TIME				  Text	 "16:57:20"
+??TIME				  Text	 "16:58:20"
 ??VERSION			  Number 040A
 @32BIT				  Text	 0
 @CODE				  Text	 DGROUP

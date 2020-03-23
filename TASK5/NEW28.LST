@@ -1,4 +1,4 @@
-Turbo Assembler	 Version 4.1	    03/03/20 16:30:12	    Page 1
+Turbo Assembler	 Version 4.1	    03/10/20 17:01:51	    Page 1
 new28.asm
 
 
@@ -30,67 +30,67 @@ new28.asm
      25	      06
      26
      27
-     28	0109  8A 0E 0000e			     mov     cl, BufEnd
-     29	010D  2A 0E 0000e			     sub     cl, BufBeg
-     30	0111  80 F9 00				     cmp     cl, 0
-     31	0114  76 44				     jbe     @@End28
+     28	0109  2E: 8A 0E	0000e			     mov     cl, cs:BufEnd
+     29	010E  2E: 2A 0E	0000e			     sub     cl, cs:BufBeg
+     30	0113  80 F9 00				     cmp     cl, 0
+     31	0116  76 49				     jbe     @@End28
      32
-     33	0116  BA 0000e				     mov     dx, offset	filespec
-     34	0119  0E				     push    cs
-     35	011A  1F				     pop     ds
+     33	0118  BA 0000e				     mov     dx, offset	cs:filespec
+     34	011B  0E				     push    cs
+     35	011C  1F				     pop     ds
      36
-     37	011B  B8 3D02				     mov     ax, 3d02h
-     38	011E  CD 21				     int     21h
-     39	0120  8B D8				     mov     bx, ax
+     37	011D  B8 3D02				     mov     ax, 3d02h
+     38	0120  CD 21				     int     21h
+     39	0122  8B D8				     mov     bx, ax
      40
-     41	0122  73 0A				     jnc     @@cont
-     42	0124  8A D0				     mov     dl, al
-     43	0126  B8 0200				     mov     ax, 0200h
-     44	0129  CD 21				     int     21h
-     45	012B  EB 2D 90				     jmp     @@End28
+     41	0124  73 0A				     jnc     @@cont
+     42	0126  8A D0				     mov     dl, al
+     43	0128  B8 0200				     mov     ax, 0200h
+     44	012B  CD 21				     int     21h
+     45	012D  EB 32 90				     jmp     @@End28
      46
-     47	012E  B8 4202		     @@cont:	     mov     ax, 4202h
-     48	0131  B9 0000				     mov     cx, 0
-     49	0134  BA 0000				     mov     dx, 0
-     50	0137  CD 21				     int     21h
+     47	0130  B8 4202		     @@cont:	     mov     ax, 4202h
+     48	0133  B9 0000				     mov     cx, 0
+     49	0136  BA 0000				     mov     dx, 0
+     50	0139  CD 21				     int     21h
      51
-     52	0139  8A 0E 0000e			     mov     cl, BufEnd
-     53	013D  2A 0E 0000e			     sub     cl, BufBeg
-     54	0141  B5 00				     mov     ch, 00h
-     55	0143  BA 0000e				     mov     dx, offset	BUF
-     56	0146  02 16 0000e			     add     dl, BufBeg
+     52	013B  2E: 8A 0E	0000e			     mov     cl, cs:BufEnd
+     53	0140  2E: 2A 0E	0000e			     sub     cl, cs:BufBeg
+     54	0145  B5 00				     mov     ch, 00h
+     55	0147  BA 0000e				     mov     dx, offset	BUF
+     56	014A  2E: 02 16	0000e			     add     dl, cs:BufBeg
      57
-Turbo Assembler	 Version 4.1	    03/03/20 16:30:12	    Page 2
+Turbo Assembler	 Version 4.1	    03/10/20 17:01:51	    Page 2
 new28.asm
 
 
 
-     58	014A  B8 4000				     mov     ax, 4000h
-     59	014D  CD 21				     int     21h
+     58	014F  B8 4000				     mov     ax, 4000h
+     59	0152  CD 21				     int     21h
      60
      61				     ;		     mov     COUNT, 0
-     62	014F  A0 0000e				     mov     al, BufEnd
-     63	0152  A2 0000e				     mov     BufBeg, al
+     62	0154  2E: A0 0000e			     mov     al, cs:BufEnd
+     63	0158  2E: A2 0000e			     mov     cs:BufBeg,	al
      64
-     65	0155  B8 3E00				     mov     ax, 3e00h
-     66	0158  CD 21				     int     21h
+     65	015C  B8 3E00				     mov     ax, 3e00h
+     66	015F  CD 21				     int     21h
      67
-     68	015A  07 5E 5F 59 5B 1F	5A+  @@End28:	     pop     es	si di cx bx ds dx ax
+     68	0161  07 5E 5F 59 5B 1F	5A+  @@End28:	     pop     es	si di cx bx ds dx ax
      69	      58
      70
      71				     ;		     mov     al, 20h
      72				     ;		     out     20h, al
      73
-     74	0162  9D				     popf
-     75	0163  CF				     iret
-     76	0164					     endp
+     74	0169  9D				     popf
+     75	016A  CF				     iret
+     76	016B					     endp
      77
-     78	0164			     .data
+     78	016B			     .data
      79
      80	0000  0000		     Old28	     dw	     0
      81	0002  0000				     dw	     0
      82				     end
-Turbo Assembler	 Version 4.1	    03/03/20 16:30:12	    Page 3
+Turbo Assembler	 Version 4.1	    03/10/20 17:01:51	    Page 3
 Symbol Table
 
 
@@ -98,13 +98,13 @@ Symbol Table
 
 Symbol Name			  Type	 Value
 
-??DATE				  Text	 "03/03/20"
+??DATE				  Text	 "03/10/20"
 ??FILENAME			  Text	 "new28	  "
-??TIME				  Text	 "16:30:12"
+??TIME				  Text	 "17:01:51"
 ??VERSION			  Number 040A
 @32BIT				  Text	 0
-@@CONT				  Near	 DGROUP:012E
-@@END28				  Near	 DGROUP:015A
+@@CONT				  Near	 DGROUP:0130
+@@END28				  Near	 DGROUP:0161
 @CODE				  Text	 DGROUP
 @CODESIZE			  Text	 0
 @CPU				  Text	 0103H
@@ -128,5 +128,5 @@ Groups & Segments		  Bit Size Align  Combine Class
 
 DGROUP				  Group
   _DATA				  16  0004 Word	  Public  DATA
-  _TEXT				  16  0164 Word	  Public  CODE
+  _TEXT				  16  016B Word	  Public  CODE
 

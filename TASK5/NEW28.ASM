@@ -24,12 +24,12 @@ New28		proc
 		push	ax dx ds bx cx di si es
 
 
-		mov	cl, BufEnd
-		sub	cl, BufBeg
+		mov	cl, cs:BufEnd
+		sub	cl, cs:BufBeg
 		cmp	cl, 0
 		jbe	@@End28
 
-		mov	dx, offset filespec
+		mov	dx, offset cs:filespec
 		push	cs
 		pop	ds
 
@@ -48,18 +48,18 @@ New28		proc
 		mov	dx, 0
 		int 	21h
 
-		mov	cl, BufEnd
-		sub	cl, BufBeg
+		mov	cl, cs:BufEnd
+		sub	cl, cs:BufBeg
 		mov	ch, 00h
 		mov	dx, offset BUF
-		add	dl, BufBeg 
+		add	dl, cs:BufBeg 
 
 		mov	ax, 4000h
 		int	21h
 
 ;		mov	COUNT, 0
-		mov	al, BufEnd
-		mov	BufBeg, al
+		mov	al, cs:BufEnd
+		mov	cs:BufBeg, al
 
 		mov	ax, 3e00h
 		int 	21h

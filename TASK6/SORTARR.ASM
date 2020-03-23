@@ -32,10 +32,8 @@ sortfwd		proc
 @@insideCy:	cmp	al, byte ptr es:[di]
 		jb	@@bigeq
 
-		mov	ah, byte ptr es:[di]
-		mov	byte ptr es:[di], al
-		mov	byte ptr es:[si], ah
-		mov	al, ah
+		xchg	al, byte ptr es:[di]
+		mov	byte ptr es:[si], al
 
 @@bigeq:	inc	di
 		dec	cx
@@ -75,6 +73,7 @@ sortbkd		proc
 
 @@insideCy2:	cmp	al, byte ptr es:[di]
 		ja	@@lesseq
+
 
 		mov	ah, byte ptr es:[di]
 		mov	byte ptr es:[di], al
