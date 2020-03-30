@@ -21,7 +21,7 @@ New28   proc
 		pusha
 		push es ds
 
-		call flushBuf 
+		call PrintBuf 
 
 		pop ds es
 		popa
@@ -36,7 +36,7 @@ New28   proc
 Old28   dw 0h
         dw 0h
 
-flushBuf proc 
+PrintBuf proc 
 
 
 		push ds

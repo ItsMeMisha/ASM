@@ -1,30 +1,25 @@
 .186
 .model tiny
 .code
-org 	100h
+org 100h
 
+locals	@@
 
-public		Old09
-public		New09
+public	Old09
+public	New09
 public	MATRIX
 
 extrn	framedr	:proc
 extrn	printl	:proc
 
-
-extrn		BufBeg	:byte
-extrn		BufEnd	:byte
-extrn		BUF	:byte
-extrn		COUNT	:byte
+extrn 	EndLabel
 
 ;=================================================
-; New int 09h that should read pushed keys and write them to BUF
+; New int 09h that turn matrix on and off
 ;=================================================
 
-New09   proc
-        pusha
-		push es ds
-;====================================
+New09		proc
+
 		push	ax bx cx dx di si es
 
 		in	al, 60h
@@ -54,52 +49,20 @@ New09   proc
 		cmp	cs:MATRIX, 1
 		je	cs:@@NotYet
 
-@@NOTYET:	pop	es si di dx cx bx ax
+@@NotYet:	in	al, 61h
+		mov	ah, al
+		or	al, 80h
+		out	61h, al
+		xchg	al, ah
+		out	61h, al
 
-;========================================
-	;call original int 9h
-		pushf
-		call dword ptr cs:[Old09]
-
-		call readToBuf
-		
-		pop ds es
-		popa
-		iret
-		endp
-		
-
-Old09   dw 0h
-        dw 0h
-
-		
-
-readToBuf proc 
+		pop	es si di dx cx bx ax
 	
-		push ds
-		push cs
-		pop ds
+		db	0eah
+Old09		dw 	0
+		dw 	0
 
-	;saving pressed key
-		mov ah, 01h	
-		int 16h
-
-		jz @@exit
-
-	;setting bx as len 
-		mov bl, BufEnd
-		xor bh, bh
-
-	;saving key to buff
-		mov BUF[bx], al
-		inc BufEnd
-
-
-@@exit:
-
-		pop ds
-
-		ret
+		iret
 		endp
 
 ;=================================================
@@ -131,7 +94,9 @@ CURLETTER	db	0h
 
 MATRIX		db	0h
 
-WAKEUP		db 	'WAKE UP, NEO', 0h
+INTBUF		dw	0
+		dw	0
 
+WAKEUP		db 	'WAKE UP, NEO', 0h
 
 end

@@ -12,6 +12,9 @@ extrn		New28	:proc
 extrn		Old09
 extrn		New09	:proc
 
+extrn		Old08
+extrn		New08	:proc
+
 extrn		EndLabel
 
 public		BufBeg
@@ -31,6 +34,12 @@ Start:		mov	COUNT, 0
 		mov	cx, 09h
 		mov	di, offset Old09
 		mov	si, offset New09
+
+		call	rplInt
+
+		mov	cx, 08h
+		mov	di, offset Old08
+		mov	si, offset New08
 
 		call	rplInt
 
