@@ -19,82 +19,72 @@ public		New28
 
 New28   proc
 		pusha
-		push es ds
+		push 	es ds
 
-		call PrintBuf 
+		call 	PrintBuf 
 
-		pop ds es
+		pop 	ds es
 		popa
 
-	;call original int 28h
 		pushf
-		call dword ptr cs:[Old28]
+		call 	dword ptr cs:[Old28]
 
 		iret
 		endp
 
-Old28   dw 0h
-        dw 0h
+Old28   	dw 	0h
+        	dw 	0h
 
-PrintBuf proc 
+;=================================================
+; Prints buffer to file and flushes buffer
+; Destr: AX, BX, CX, DX
+;=================================================
 
+PrintBuf	proc 
 
-		push ds
-		push cs
-		pop ds
+		push 	ds
+		push 	cs
+		pop 	ds
 		
-		mov cl, cs:BufEnd
-		xor ch, ch
-
-		;cmp head_ind, cl
-		;je @@exit
+		mov 	cl, cs:BufEnd
+		xor 	ch, ch
 	
-		push cx
-
-		;mov cl, tail_ind
-	;opening file by adress in ds:dx and saving its handler  
-		mov ax, 3d01h; 
-		mov dx, offset filespec
-		int 21h
-		mov fileHandler, ax
-
-
-	;moving cursor to the end of file
-		mov ax, 4202h
-		mov bx, fileHandler
-		xor cx, cx
-		xor dx, dx
-		int 21h
-
-;!!! 
-		mov al, BufBeg
-		xor ah, ah
-		mov dx, offset BUF
-		add dx, ax
-
-		pop cx
-	;writing to file
-		mov ah, 40h
-		mov bx, fileHandler
-		sub cl, BufBeg
-		xor ch, ch
-		int 21h
+		push 	cx
+					;open file
+		mov 	ax, 3d01h
+		mov 	dx, offset filespec
+		int 	21h
+		mov 	fileHandler, ax
+					;set coursor to the end
+		mov 	ax, 4202h
+		mov 	bx, fileHandler
+		xor 	cx, cx
+		xor 	dx, dx
+		int 	21h
+					;write to file
+		mov 	al, cs:BufBeg
+		xor 	ah, ah
+		mov 	dx, offset BUF
+		add 	dx, ax
+		pop 	cx
+		mov 	ah, 40h
+		mov 	bx, cs:fileHandler
+		sub 	cl, cs:BufBeg
+		xor 	ch, ch
+		int 	21h
 		
-		add cl, BufBeg
-		xor ch, ch
-		mov BufBeg, cl
+		add 	cl, cs:BufBeg
+		xor 	ch, ch
+		mov 	cs:BufBeg, cl
+					;close file
+		mov 	ah, 3eh
+		mov 	bx, cs:fileHandler
+		int 	21h
 
-	;closing file
-		mov ah, 3eh
-		mov bx, fileHandler
-		int 21h
-
-@@exit:
-		pop ds
+		pop 	ds
 		ret
 		endp
 
-
-fileHandler dw 0h
+fileHandler 	dw 	0h
 
 end

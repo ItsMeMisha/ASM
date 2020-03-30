@@ -23,9 +23,6 @@ oneiter		proc
 		pop	es
 
 		mov	bx, ax
-;		shl	ax, 6
-;		shl	bx, 4
-;		add	bx, ax
 		shl	bx, 1	 
 
 		mov	cx, 23d

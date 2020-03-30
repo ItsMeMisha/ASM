@@ -14,7 +14,7 @@ extrn	scrsft	:proc
 public	Old08
 public	New08
 
-CURLINE		db 0h
+CURLINE		db 	0h
 
 New08		proc
 
@@ -42,16 +42,12 @@ New08		proc
 		
 @@CONTINUE:	pop	ds di si es
 		popa
-		popf
 
-		db	0eah
-Old08		dw	0
-		dw	0
-
-		mov	al, 20h
-		out	20h, al
-
+	        call 	dword ptr cs:[Old08]        
 		iret
-
 		endp
+
+Old08   	dw	0
+        	dw	0
+        
 end
