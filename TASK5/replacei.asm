@@ -8,7 +8,7 @@ org 100h
 ; Entry:DI: address where to save old interuption
 ;	SI: address where is located new interuption
 ;	CS: segment where to save
-;	CX: number of interuption
+;	AL: number of interuption
 ; Destr:AX, BX, ES
 ;=================================================
 
@@ -16,24 +16,17 @@ public		rplInt
 
 rplInt		proc
 
-		cli
-		
-		mov	ax, 0h
-		mov	es, ax
+		mov	ah, 35h
+		int	21h
+		mov	word ptr cs:[di], bx
+		mov	word ptr cs:[di+2], es
 
-		mov	bx, cx
-		shl	bx, 2
+		push	cs
+		pop	ds
+		mov	dx, si
+		mov	ah, 25h
+		int	21h
 
-		mov	ax, word ptr es:[bx]
-		mov	word ptr cs:[di], ax
-		mov	ax, word ptr es:[bx+2]
-		mov	word ptr cs:[di+2], ax
-
-		mov	word ptr es:[bx], si
-		mov	ax, cs
-		mov	word ptr es:[bx+2], ax
-	
-		sti
 		ret
 rplInt	endp
 

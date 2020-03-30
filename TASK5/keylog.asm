@@ -25,19 +25,19 @@ public		filespec
 
 Start:		mov	COUNT, 0
 
-		mov	cx, 28h
+		mov	al, 28h
 		mov	di, offset Old28
 		mov	si, offset New28
 
 		call	rplInt
 
-		mov	cx, 09h
+		mov	al, 09h
 		mov	di, offset Old09
 		mov	si, offset New09
 
 		call	rplInt
 
-		mov	cx, 08h
+		mov	al, 08h
 		mov	di, offset Old08
 		mov	si, offset New08
 
