@@ -1,1 +1,0 @@
-tlink /t keylog.obj replacei.obj new28.obj new09.obj endprog.obj
