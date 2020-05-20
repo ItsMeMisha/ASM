@@ -33,7 +33,7 @@ memchr	endp
 ;	ES - second memory segment
 ;	DI - address of the beginning of the second area
 ;	CX - lenght of the areas
-; Exit:	AL - -1 if first is less, 1 if first is more, 0 if equal
+; Exit:	AL - negative if first is less, positive if first is more, 0 if equal
 ; Destr:CX, SI, DI
 ;=================================================
 
@@ -43,20 +43,14 @@ memcmp 	proc
 
 		cld
 		repne 	cmpsb
-		ja 	@@BIGGER
+		je 	@@EQ
 		dec	si
 		dec	di
 		lodsb
-		cmp	al, byte ptr es:[di]
-		jb 	@@LESS
-
-		mov 	al, 0
+		sub	al, byte ptr es:[di]
 		jmp 	@@END
 
-@@BIGGER:	mov	al, 1
-		jmp 	@@END
-
-@@LESS:		mov	al, -1
+@@EQ:		mov	al, 0h
 
 @@END:		ret
 memcmp	endp
