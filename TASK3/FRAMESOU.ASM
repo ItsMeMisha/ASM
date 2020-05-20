@@ -40,6 +40,7 @@ horline	proc
 	pop 	es
 	mov word ptr es:[di], BX
 	add	di, 2
+	cld
 	rep 	stosw
 	mov word ptr es:[di], DX
 	add	di, 2
@@ -72,7 +73,8 @@ frshad	proc
 	sub	di, 162d
 	mov	ax, rShadow
 	inc	si
-
+	
+	cld
 @@rightSh: 
 
 	stosw
@@ -198,6 +200,7 @@ public printl
 
 printl	proc
 
+	cld
 	lodsb
 @@NEXT:	stosb
 	inc di
