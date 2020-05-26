@@ -122,7 +122,9 @@ framedr	proc
 	mov	ax, fill
 	mov	bx, vertic
 	mov	dx, vertic
-@@MID:	push	cx
+	
+@@fillMid:
+	push	cx
 	call	horline
 	pop	cx
 	shl	cx, 1
@@ -131,7 +133,7 @@ framedr	proc
 	shr	cx, 1
 	dec	si
 	cmp	si, 0
-	ja	@@MID
+	ja	@@fillMid
 
 	pop	si
 
@@ -169,7 +171,7 @@ frext	proc
 	mov	cx, 12
 	mov	dx, 1
 	
-@@DRAW: ;call	framedr
+@@DrawFrame: 
 	sub	di, (80+3)*2
 	add	cx, 6
 	add	dx, 2
@@ -183,7 +185,7 @@ frext	proc
 	pop	dx
 	pop	cx
 	cmp	di, 160
-	jae	@@DRAW
+	jae	@@DrawFrame
 
 	ret
 
@@ -202,11 +204,13 @@ printl	proc
 
 	cld
 	lodsb
-@@NEXT:	stosb
+	
+@@NEXTLETTER:	
+	stosb
 	inc di
 	lodsb
 	cmp	al, 00
-	jne	@@NEXT
+	jne	@@NEXTLETTER
 
 	ret
 
